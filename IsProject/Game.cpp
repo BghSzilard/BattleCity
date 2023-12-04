@@ -1,12 +1,15 @@
 #include "Game.h"
+#include "GameConfig.h"
+
+#include <array>
 
 Game::Game() : map{ spr, FPSclock, window }, FPSclock{ font }
 {
 	std::srand(unsigned(std::time(nullptr)));
-	window.create(sf::VideoMode(1920, 1080), "Battle City", sf::Style::Fullscreen);
-	window.setFramerateLimit(60);
+	window.create(sf::VideoMode(), GameConfig::WINDOW_NAME, sf::Style::Fullscreen);
+	window.setFramerateLimit(GameConfig::FRAME_LIMIT);
 	
-	font.loadFromFile("data/joystix monospace.ttf");
+	font.loadFromFile(GameConfig::FONT_PATH);
 	
 	state = GameState::Menu;
 }
@@ -28,17 +31,19 @@ void Game::runGame()
 
 void Game::menu()
 {
-	const int ILE{ 3 };
-	sf::Text tekst[ILE];
-	sf::String str[]{ "1 player", "2 players", "Exit" };
+	std::array<std::string, 3> options { "1 player", "2 players", "Exit" };
+
+	sf::Text text[options.size()];
+
 	sf::Sprite menuStone = spr.stoneBig;
 
-	for (int i = 0; i < ILE; i++) {
-		tekst[i].setFont(font);
-		tekst[i].setCharacterSize(window.getSize().y / 12);
+	for (int i = 0; i < options.size(); ++i) 
+	{
+		text[i].setFont(font);
+		text[i].setCharacterSize(window.getSize().y / 12);
 
-		tekst[i].setString(str[i]);
-		tekst[i].setPosition(float(window.getSize().y / 3),
+		text[i].setString(options[i]);
+		text[i].setPosition(float(window.getSize().y / 3),
 			float(window.getSize().y / 2.5 + i * window.getSize().y / 6.4));
 	}
 
@@ -47,19 +52,21 @@ void Game::menu()
 
 	icon = GameState::SinglePlayerGame;
 
-	while (state == GameState::Menu) {
+	while (state == GameState::Menu) 
+	{
 		FPSclock.stopClock();
 		eventsMenu();
 
 		//change the color to red 
-		for (int i = 0; i < ILE; i++) {
+		for (int i = 0; i < options.size(); ++i) 
+		{
 			if (i == int(icon) - 1) {
-				tekst[i].setFillColor(sf::Color::Red);
-				spr.tankIco.setPosition(tekst[i].getPosition());
+				text[i].setFillColor(sf::Color::Red);
+				spr.tankIco.setPosition(text[i].getPosition());
 				spr.tankIco.move(float(window.getSize().x) / float(-20.0), 0);
 			}
 			// put the color to be white 
-			else tekst[i].setFillColor(sf::Color::White);
+			else text[i].setFillColor(sf::Color::White);
 		}
 		window.clear();
 		// build the menu stone
@@ -81,9 +88,11 @@ void Game::menu()
 		spr.control.setScale(map.pr.scale * 1.2, map.pr.scale * 1.2);
 		window.draw(spr.control);
 		window.draw(spr.tankIco);
-		for (int i = 0; i < ILE; i++) {
-			window.draw(tekst[i]);
+		for (int i = 0; i < options.size(); ++i) 
+		{
+			window.draw(text[i]);
 		}
+
 		FPSclock.draw(window);
 		window.display();
 	}
