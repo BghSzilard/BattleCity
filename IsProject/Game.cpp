@@ -6,7 +6,7 @@ Game::Game() : map{ spr, FPSclock, window }, FPSclock{ font }
 	window.create(sf::VideoMode(1920, 1080), "Battle City", sf::Style::Fullscreen);
 	window.setFramerateLimit(60);
 	
-	font.loadFromFile("D:\\UNITBV\\Anul 3\\IS\\IsProject\\BattleCity\\Resources\\joystix monospace.ttf");
+	font.loadFromFile("data/joystix monospace.ttf");
 	
 	state = GameState::Menu;
 }
