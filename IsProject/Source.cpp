@@ -2,7 +2,7 @@
 
 int main()
 {
-	Game MyGame;
+	BattleCity::Game MyGame;
 	MyGame.runGame();
 
 	return 0;

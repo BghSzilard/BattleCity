@@ -134,15 +134,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="GameLogic\Map.cpp" />
+    <ClCompile Include="SFML\TileMap.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="data\DEFINITIONS.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="GameLogic\Map.h" />
+    <ClInclude Include="GameLogic\ReaderBase.h" />
+    <ClInclude Include="SFML\TileMap.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\map.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
