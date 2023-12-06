@@ -4,7 +4,7 @@ namespace BattleCity
 {
     namespace GameLogic
     {
-        bool Map::readFromFile(std::string filePath)
+        bool Map::readFromFile(const std::string& filePath)
         {
             std::ifstream file(filePath);
 

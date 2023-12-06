@@ -15,53 +15,82 @@ namespace BattleCity
 {
     namespace SFML
     {
-        bool TileMap::load(const std::string& tileset, sf::Vector2u tileSize, GameLogic::Map map)
+        TileMap::TileMap()
         {
-            size_t width = map.getWidth();
-            size_t height = map.getHeight();
+            m_vertices.setPrimitiveType(sf::Triangles);
+        }
 
-            // load the tileset texture
-            if (!m_tileset.loadFromFile(tileset))
+        bool TileMap::load(const std::string& mapFilePath, const std::string& texturePath)
+        {
+            return setModel(mapFilePath) && setTexture(texturePath);
+        }
+
+        // error/exception handling
+        bool TileMap::setModel(const std::string& mapPath)
+        {
+            bool fileRead = m_mapModel.readFromFile(mapPath);
+            if (!fileRead)
                 return false;
 
-            // resize the vertex array to fit the level size
-            m_vertices.setPrimitiveType(sf::Triangles);
-
+            size_t width = m_mapModel.getWidth();
+            size_t height = m_mapModel.getHeight();
+            
             // multiply by 6, because every tile has 2 triangles (triangle has 3 points 2*3=6)
             m_vertices.resize(width * height * 6);
 
-            // populate the vertex array, with two triangles per tile
             for (unsigned int i = 0; i < height; ++i)
                 for (unsigned int j = 0; j < width; ++j)
                 {
                     // get the current tile number
-                    int tileNumber = map.at(i, j);
+                    int tileNumber = m_mapModel.at(i, j);
 
                     // get a pointer to the triangles' vertices of the current tile
                     sf::Vertex* triangles = &m_vertices[(i * width + j) * 6];
 
                     // define the 6 corners of the two triangles
-                    triangles[0].position = sf::Vector2f(j * tileSize.x, i * tileSize.y);
-                    triangles[1].position = sf::Vector2f((j + 1) * tileSize.x, i * tileSize.y);
-                    triangles[2].position = sf::Vector2f(j * tileSize.x, (i + 1) * tileSize.y);
-                    triangles[3].position = sf::Vector2f(j * tileSize.x, (i + 1) * tileSize.y);
-                    triangles[4].position = sf::Vector2f((j + 1) * tileSize.x, i * tileSize.y);
-                    triangles[5].position = sf::Vector2f((j + 1) * tileSize.x, (i + 1) * tileSize.y);
-
-
-                    int scaleFactor = tileSize.x / 32;
-
-                    // define the 6 matching texture coordinates
-                    triangles[0].texCoords = sf::Vector2f(tileNumber * tileSize.x / scaleFactor, 0);
-                    triangles[1].texCoords = sf::Vector2f((tileNumber + 1) * tileSize.x / scaleFactor, 0);
-                    triangles[2].texCoords = sf::Vector2f(tileNumber * tileSize.x / scaleFactor, tileSize.y / scaleFactor);
-                    triangles[3].texCoords = sf::Vector2f(tileNumber * tileSize.x / scaleFactor, tileSize.y / scaleFactor);
-                    triangles[4].texCoords = sf::Vector2f((tileNumber + 1) * tileSize.x / scaleFactor, 0);
-                    triangles[5].texCoords = sf::Vector2f((tileNumber + 1) * tileSize.x / scaleFactor, tileSize.y / scaleFactor);
+                    triangles[0].position = sf::Vector2f(j * kTileSize, i * kTileSize);
+                    triangles[1].position = sf::Vector2f((j + 1) * kTileSize, i * kTileSize);
+                    triangles[2].position = sf::Vector2f(j * kTileSize, (i + 1) * kTileSize);
+                    triangles[3].position = sf::Vector2f(j * kTileSize, (i + 1) * kTileSize);
+                    triangles[4].position = sf::Vector2f((j + 1) * kTileSize, i * kTileSize);
+                    triangles[5].position = sf::Vector2f((j + 1) * kTileSize, (i + 1) * kTileSize);
                 }
 
             return true;
         }
+
+        bool TileMap::setTexture(const std::string& texturePath)
+        {
+            if (!m_tileset.loadFromFile(texturePath))
+                return false;
+
+            size_t width = m_mapModel.getWidth();
+            size_t height = m_mapModel.getHeight();
+
+            for (unsigned int i = 0; i < height; ++i)
+                for (unsigned int j = 0; j < width; ++j)
+                {
+                    // get the current tile number
+                    int tileNumber = m_mapModel.at(i, j);
+
+                    // get a pointer to the triangles' vertices of the current tile
+                    sf::Vertex* triangles = &m_vertices[(i * width + j) * 6];
+
+                    // divide by 32 because tile textures in tileset.png are 32x32 each
+                    const uint32_t scaleFactor = kTileSize / 32;
+
+                    // define the 6 matching texture coordinates
+                    triangles[0].texCoords = sf::Vector2f(tileNumber * kTileSize / scaleFactor, 0);
+                    triangles[1].texCoords = sf::Vector2f((tileNumber + 1) * kTileSize / scaleFactor, 0);
+                    triangles[2].texCoords = sf::Vector2f(tileNumber * kTileSize / scaleFactor, kTileSize / scaleFactor);
+                    triangles[3].texCoords = sf::Vector2f(tileNumber * kTileSize / scaleFactor, kTileSize / scaleFactor);
+                    triangles[4].texCoords = sf::Vector2f((tileNumber + 1) * kTileSize / scaleFactor, 0);
+                    triangles[5].texCoords = sf::Vector2f((tileNumber + 1) * kTileSize / scaleFactor, kTileSize / scaleFactor);
+                }
+
+            return true;
+        }
+
         void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
         {
             // apply the transform

@@ -14,9 +14,17 @@ namespace BattleCity
     {
         class TileMap : public sf::Drawable, public sf::Transformable
         {
+        private:
+            const uint32_t kTileSize = 64;
+
         public:
 
-            bool load(const std::string& tilesetPath, sf::Vector2u tileSize, GameLogic::Map map);
+            TileMap();
+
+            bool load(const std::string&, const std::string&);
+            bool setModel(const std::string&);
+            bool setTexture(const std::string&);
+
 
         private:
 
@@ -24,6 +32,7 @@ namespace BattleCity
 
             sf::VertexArray m_vertices;
             sf::Texture m_tileset;
+            GameLogic::Map m_mapModel;
         };
     }
 }

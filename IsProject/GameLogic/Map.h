@@ -15,7 +15,7 @@ namespace BattleCity
             Map() = default;
 
             // maybe create StreamReader->FileStreamReader
-            bool readFromFile(std::string filePath);
+            bool readFromFile(const std::string& );
 
             const size_t getWidth() const;
             const size_t getHeight() const;
