@@ -48,12 +48,12 @@ namespace BattleCity
                     sf::Vertex* triangles = &m_vertices[(i * width + j) * 6];
 
                     // define the 6 corners of the two triangles
-                    triangles[0].position = sf::Vector2f(j * kTileSize, i * kTileSize);
-                    triangles[1].position = sf::Vector2f((j + 1) * kTileSize, i * kTileSize);
-                    triangles[2].position = sf::Vector2f(j * kTileSize, (i + 1) * kTileSize);
-                    triangles[3].position = sf::Vector2f(j * kTileSize, (i + 1) * kTileSize);
-                    triangles[4].position = sf::Vector2f((j + 1) * kTileSize, i * kTileSize);
-                    triangles[5].position = sf::Vector2f((j + 1) * kTileSize, (i + 1) * kTileSize);
+                    triangles[0].position = sf::Vector2f((float)j * kTileSize, (float)i * kTileSize);
+                    triangles[1].position = sf::Vector2f((float)(j + 1) * kTileSize, (float)i * kTileSize);
+                    triangles[2].position = sf::Vector2f((float)j * kTileSize, (float)(i + 1) * kTileSize);
+                    triangles[3].position = sf::Vector2f((float)j * kTileSize, (float)(i + 1) * kTileSize);
+                    triangles[4].position = sf::Vector2f((float)(j + 1) * kTileSize, (float)i * kTileSize);
+                    triangles[5].position = sf::Vector2f((float)(j + 1) * kTileSize, (float)(i + 1) * kTileSize);
                 }
 
             return true;
@@ -80,12 +80,12 @@ namespace BattleCity
                     const uint32_t scaleFactor = kTileSize / 32;
 
                     // define the 6 matching texture coordinates
-                    triangles[0].texCoords = sf::Vector2f(tileNumber * kTileSize / scaleFactor, 0);
-                    triangles[1].texCoords = sf::Vector2f((tileNumber + 1) * kTileSize / scaleFactor, 0);
-                    triangles[2].texCoords = sf::Vector2f(tileNumber * kTileSize / scaleFactor, kTileSize / scaleFactor);
-                    triangles[3].texCoords = sf::Vector2f(tileNumber * kTileSize / scaleFactor, kTileSize / scaleFactor);
-                    triangles[4].texCoords = sf::Vector2f((tileNumber + 1) * kTileSize / scaleFactor, 0);
-                    triangles[5].texCoords = sf::Vector2f((tileNumber + 1) * kTileSize / scaleFactor, kTileSize / scaleFactor);
+                    triangles[0].texCoords = sf::Vector2f((float)tileNumber * kTileSize / scaleFactor, 0.f);
+                    triangles[1].texCoords = sf::Vector2f((float)(tileNumber + 1) * kTileSize / scaleFactor, 0.f);
+                    triangles[2].texCoords = sf::Vector2f((float)tileNumber * kTileSize / scaleFactor, (float)kTileSize / scaleFactor);
+                    triangles[3].texCoords = sf::Vector2f((float)tileNumber * kTileSize / scaleFactor, (float)kTileSize / scaleFactor);
+                    triangles[4].texCoords = sf::Vector2f((float)(tileNumber + 1) * kTileSize / scaleFactor, 0.f);
+                    triangles[5].texCoords = sf::Vector2f((float)(tileNumber + 1) * kTileSize / scaleFactor, (float)kTileSize / scaleFactor);
                 }
 
             return true;
