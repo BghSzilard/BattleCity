@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-#include "../DEFINITIONS.h"
+#include "DEFINITIONS.h"
 
 namespace BattleCity
 {
