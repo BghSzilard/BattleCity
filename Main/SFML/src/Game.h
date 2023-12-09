@@ -1,29 +1,34 @@
 #pragma once
 #include "Sprite.h"
 #include "Timer.h"
-#include "Map.h"
+#include "SFML/TileMap.h"
 
-class Game
+namespace BattleCity
 {
-public:
-	Game();
+	class Game
+	{
+	public:
+		Game();
 
-	enum class GameState { Menu, SinglePlayerGame, TwoPlayerGame, EXIT };
+		enum class GameState { Menu, SinglePlayerGame, TwoPlayerGame, EXIT };
 
-	void runGame();
+		void runGame();
 
-private:
-	sf::RenderWindow window;
+	private:
+		sf::RenderWindow window;
 
-	GameState icon;  // needed to determine the position of the tank in the menu
-	GameState state; // current manu status of the game (menu, single, multi etc)
+		GameState icon;  // needed to determine the position of the tank in the menu
+		GameState state; // current manu status of the game (menu, single, multi etc)
 
-	Sprite spr;
-	Map map;
+		Sprite spr;
+		SFML::TileMap m_tileMap;
 
-	sf::Font font;
-	Timer FPSclock;
+		sf::Font font;
+		Timer FPSclock;
 
-	void menu();
-	void eventsMenu();
-};
+		void menu();
+		void eventsMenu();
+
+		void singlePlayer();
+	};
+}
