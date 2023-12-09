@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Visual Studio-specific CMake settings file that each developer should customize for themselves
+CMakeSettings.json
+
+# Directory where CMake will most likely generate the build system
+build/
+
 # User-specific files
 *.rsuser
 *.suo
