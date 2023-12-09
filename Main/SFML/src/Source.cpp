@@ -1,9 +1,8 @@
-#include "Game.h"
+#include <SFML/Graphics.hpp>
+#include "Menu.h"
 
 int main()
 {
 	BattleCity::Game MyGame;
 	MyGame.runGame();
 
-	return 0;
-}
