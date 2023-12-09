@@ -4,9 +4,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "../DEFINITIONS.h"
+#include "DEFINITIONS.h"
 
-#include "../GameLogic/Map.h"
+#include "Map.h"
 
 namespace BattleCity
 {

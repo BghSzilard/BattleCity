@@ -1,6 +1,6 @@
 file(GLOB SRC src/*.cpp)
 
-add_library(Core SHARED ${SRC})
+add_library(Core STATIC ${SRC})
 
 target_include_directories(Core
         PUBLIC

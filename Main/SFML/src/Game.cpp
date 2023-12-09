@@ -1,146 +1,125 @@
 #include "Game.h"
-#include "GameConfig.h"
+#include "Menu.h"
 
-#include <array>
-
-Game::Game() : map{ spr, FPSclock, window }, FPSclock{ font }
+namespace BattleCity
 {
-	std::srand(unsigned(std::time(nullptr)));
-	window.create(sf::VideoMode(), GameConfig::WINDOW_NAME, sf::Style::Fullscreen);
-	window.setFramerateLimit(GameConfig::FRAME_LIMIT);
-	
-	font.loadFromFile(GameConfig::FONT_PATH);
-	
-	state = GameState::Menu;
-}
-
-void Game::runGame()
-{
-	while (state != GameState::EXIT)
+	Game::Game() : FPSclock{ font }
 	{
-		switch (state)
-		{
-		case GameState::Menu:
-			menu();
-			break;
-		case GameState::SinglePlayerGame:
-			break;
-		}
-	}
-}
+		std::srand(unsigned(std::time(nullptr)));
+		// hardcoded screen size so that map nicely fills the screen (can be modified later)
+		window.create(sf::VideoMode(1024, 1024), "Battle City");
+		window.setFramerateLimit(60);
 
-void Game::menu()
-{
-	std::array<std::string, 3> options { "1 player", "2 players", "Exit" };
+		font.loadFromFile("sfml_assets/fonts/joystix monospace.ttf");
+		//move literals to Constants/Config header ofc
+		m_tileMap.load("core_assets/maps/map.txt", "sfml_assets/textures/tileset.png");
 
-	sf::Text text[options.size()];
-
-	sf::Sprite menuStone = spr.stoneBig;
-
-	for (int i = 0; i < options.size(); ++i) 
-	{
-		text[i].setFont(font);
-		text[i].setCharacterSize(window.getSize().y / 12);
-
-		text[i].setString(options[i]);
-		text[i].setPosition(float(window.getSize().y / 3),
-			float(window.getSize().y / 2.5 + i * window.getSize().y / 6.4));
+		state = GameState::Menu;
 	}
 
-	spr.tankIco.setScale(float(map.pr.scale * 1.5), float(map.pr.scale * 1.5));
-
-
-	icon = GameState::SinglePlayerGame;
-
-	while (state == GameState::Menu) 
+	void Game::runGame()
 	{
-		FPSclock.stopClock();
-		eventsMenu();
-
-		//change the color to red 
-		for (int i = 0; i < options.size(); ++i) 
+		while (state != GameState::EXIT)
 		{
-			if (i == int(icon) - 1) {
-				text[i].setFillColor(sf::Color::Red);
-				spr.tankIco.setPosition(text[i].getPosition());
-				spr.tankIco.move(float(window.getSize().x) / float(-20.0), 0);
+			switch (state)
+			{
+			case GameState::Menu:
+				menu();
+				break;
+			case GameState::SinglePlayerGame:
+				singlePlayer();
+				break;
 			}
-			// put the color to be white 
-			else text[i].setFillColor(sf::Color::White);
 		}
-		window.clear();
-		// build the menu stone
-		for (int y = 0; y < 15; y++) {
-			for (int x = 0; x < map.pr.widthInBlocks / 2; x++) {
-				if (x == 0 || y == 0 || x == map.pr.widthInBlocks / 2 - 1 || y == 14) {
-					menuStone.setScale(map.pr.scale, map.pr.scale);
-					menuStone.setPosition(float(map.pr.sides + x * (map.pr.blockSize * 2)), float(map.pr.topBot + y * (map.pr.blockSize * 2)));
-					window.draw(menuStone);
+	}
+
+	void Game::menu()
+	{
+		// Create a Menu with the window reference
+		Menu menu(window);
+
+		// Main game loop
+		while (window.isOpen())
+		{
+			sf::Event event;
+			while (window.pollEvent(event))
+			{
+				if (event.type == sf::Event::Closed)
+					window.close();
+			}
+
+			// Clear the window
+			window.clear();
+
+			// Draw the menu
+			menu.draw();
+
+			// Display the window
+			window.display();
+		}
+
+		state = GameState::EXIT;
+	}
+
+	void Game::eventsMenu()
+	{
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			// Press ESC or the X button in the window
+			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed &&
+				event.key.code == sf::Keyboard::Escape)
+				state = GameState::EXIT;
+			// 1 player mode (tank in the right position + enter)
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
+				icon == GameState::SinglePlayerGame) {
+				state = GameState::SinglePlayerGame;
+			}
+			// 2 players mode (tank in the right position + enter)
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
+				icon == GameState::TwoPlayerGame) {
+				state = GameState::TwoPlayerGame;
+			}
+			// EXIT mode (tank in the right position + enter)
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
+				icon == GameState::EXIT) {
+				state = GameState::EXIT;
+			}
+			// moving the tank icon - arrow up
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Up && int(icon) > 1) {
+				switch (icon) {
+				case GameState::TwoPlayerGame: icon = GameState::SinglePlayerGame;
+					break;
+				case GameState::EXIT: icon = GameState::TwoPlayerGame;
+					break;
 				}
 			}
-		}
-		spr.backGround.setPosition(float(std::round(map.pr.widthInBlocks / 8) * map.pr.blockSize + map.pr.sides), float(4 * map.pr.blockSize + map.pr.topBot));
-		spr.backGround.setScale(map.pr.scale * 0.8, map.pr.scale * 0.8);
-		window.draw(spr.backGround);
-
-		spr.control.setPosition(1050, 780);
-		float(float(map.pr.widthInBlocks * 30) - float(4 * map.pr.blockSize + map.pr.topBot)), float(std::round(map.pr.widthInBlocks / 8) * map.pr.blockSize + map.pr.sides);
-		spr.control.setScale(map.pr.scale * 1.2, map.pr.scale * 1.2);
-		window.draw(spr.control);
-		window.draw(spr.tankIco);
-		for (int i = 0; i < options.size(); ++i) 
-		{
-			window.draw(text[i]);
-		}
-
-		FPSclock.draw(window);
-		window.display();
-	}
-}
-
-void Game::eventsMenu()
-{
-	sf::Event event;
-	while (window.pollEvent(event)) {
-		// Press ESC or the X button in the window
-		if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed &&
-			event.key.code == sf::Keyboard::Escape)
-			state = GameState::EXIT;
-		// 1 player mode (tank in the right position + enter)
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
-			icon == GameState::SinglePlayerGame) {
-			state = GameState::SinglePlayerGame;
-		}
-		// 2 players mode (tank in the right position + enter)
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
-			icon == GameState::TwoPlayerGame) {
-			state = GameState::TwoPlayerGame;
-		}
-		// EXIT mode (tank in the right position + enter)
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
-			icon == GameState::EXIT) {
-			state = GameState::EXIT;
-		}
-		// moving the tank icon - arrow up
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Up && int(icon) > 1) {
-			switch (icon) {
-			case GameState::TwoPlayerGame: icon = GameState::SinglePlayerGame;
-				break;
-			case GameState::EXIT: icon = GameState::TwoPlayerGame;
-				break;
+			// moving the tank icon - arrow down
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Down && int(icon) < 3) {
+				switch (icon) {
+				case GameState::SinglePlayerGame: icon = GameState::TwoPlayerGame;
+					break;
+				case GameState::TwoPlayerGame: icon = GameState::EXIT;
+					break;
+				}
+			}
+			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::T) {
+				FPSclock.switchClock();
 			}
 		}
-		// moving the tank icon - arrow down
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Down && int(icon) < 3) {
-			switch (icon) {
-			case GameState::SinglePlayerGame: icon = GameState::TwoPlayerGame;
-				break;
-			case GameState::TwoPlayerGame: icon = GameState::EXIT;
-				break;
-			}
-		}
-		else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::T) {
-			FPSclock.switchClock();
+	}
+
+	void Game::singlePlayer()
+	{
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			// Press ESC or the X button in the window
+			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+				state = GameState::EXIT;
+
+			window.clear();
+			window.draw(m_tileMap);
+			window.display();
 		}
 	}
+
 }

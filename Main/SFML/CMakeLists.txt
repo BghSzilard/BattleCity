@@ -1,4 +1,3 @@
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
@@ -6,15 +5,19 @@ FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
-
+ 
 set(SRC
     src/Source.cpp
-    src/Game.cpp
-    src/Map.cpp
+    src/Game.cpp 
+    src/Menu.cpp
+    src/TileMap.cpp
     src/Timer.cpp
 )
 
 add_executable(IS_BattleCity ${SRC})
+
+target_link_libraries(IS_BattleCity PRIVATE Core)
+
 target_link_libraries(IS_BattleCity PRIVATE sfml-graphics sfml-window sfml-system)
 target_compile_features(IS_BattleCity PRIVATE cxx_std_17)
 
@@ -27,3 +30,5 @@ if(WIN32)
 endif()
 
 install(TARGETS IS_BattleCity)
+
+file(COPY assets/ DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/sfml_assets)
