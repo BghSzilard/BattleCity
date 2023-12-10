@@ -1,29 +1,30 @@
 #include "Game.h"
-#include "Menu.h"
+#include "SFMLMenu.h"
+#include "GameConfig.h"
 
 namespace BattleCity
 {
-	Game::Game() : FPSclock{ font }
+	Game::Game() : m_FPSclock{ m_font }
 	{
 		std::srand(unsigned(std::time(nullptr)));
 		// hardcoded screen size so that map nicely fills the screen (can be modified later)
-		window.create(sf::VideoMode(1024, 1024), "Battle City");
-		window.setFramerateLimit(60);
+		m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
+		m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
 
-		font.loadFromFile("sfml_assets/fonts/joystix monospace.ttf");
+		m_font.loadFromFile(GameConfig::FONT_PATH);
 		//move literals to Constants/Config header ofc
 		m_tileMap.load("core_assets/maps/map.txt", "sfml_assets/textures/tileset.png");
 
-		state = GameState::Menu;
+		m_state = GameState::SFMLMenu;
 	}
 
 	void Game::runGame()
 	{
-		while (state != GameState::EXIT)
+		while (m_state != GameState::EXIT)
 		{
-			switch (state)
+			switch (m_state)
 			{
-			case GameState::Menu:
+			case GameState::SFMLMenu:
 				menu();
 				break;
 			case GameState::SinglePlayerGame:
@@ -36,89 +37,79 @@ namespace BattleCity
 	void Game::menu()
 	{
 		// Create a Menu with the window reference
-		Menu menu(window);
+		SFMLMenu menu(m_window);
 
 		// Main game loop
-		while (window.isOpen())
+		while (m_window.isOpen())
 		{
 			sf::Event event;
-			while (window.pollEvent(event))
+			while (m_window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
-					window.close();
+				{
+					m_window.close();
+				}
+				else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Up)
+				{
+					menu.changeMenuOption(SFMLMenu::MenuDirection::Upward);
+				}
+				else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Down)
+				{
+					menu.changeMenuOption(SFMLMenu::MenuDirection::Downward);
+				}
+				else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Enter)
+				{
+					int chosenOption = menu.getChosenOption();
+					m_state = determineGameState(chosenOption);
+					return;
+				}
 			}
 
 			// Clear the window
-			window.clear();
+			m_window.clear();
 
 			// Draw the menu
 			menu.draw();
 
 			// Display the window
-			window.display();
+			m_window.display();
 		}
 
-		state = GameState::EXIT;
+		m_state = GameState::EXIT;
 	}
 
-	void Game::eventsMenu()
+	BattleCity::Game::GameState Game::determineGameState(int option)
 	{
-		sf::Event event;
-		while (window.pollEvent(event)) {
-			// Press ESC or the X button in the window
-			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed &&
-				event.key.code == sf::Keyboard::Escape)
-				state = GameState::EXIT;
-			// 1 player mode (tank in the right position + enter)
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
-				icon == GameState::SinglePlayerGame) {
-				state = GameState::SinglePlayerGame;
-			}
-			// 2 players mode (tank in the right position + enter)
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
-				icon == GameState::TwoPlayerGame) {
-				state = GameState::TwoPlayerGame;
-			}
-			// EXIT mode (tank in the right position + enter)
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Return &&
-				icon == GameState::EXIT) {
-				state = GameState::EXIT;
-			}
-			// moving the tank icon - arrow up
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Up && int(icon) > 1) {
-				switch (icon) {
-				case GameState::TwoPlayerGame: icon = GameState::SinglePlayerGame;
-					break;
-				case GameState::EXIT: icon = GameState::TwoPlayerGame;
-					break;
-				}
-			}
-			// moving the tank icon - arrow down
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Down && int(icon) < 3) {
-				switch (icon) {
-				case GameState::SinglePlayerGame: icon = GameState::TwoPlayerGame;
-					break;
-				case GameState::TwoPlayerGame: icon = GameState::EXIT;
-					break;
-				}
-			}
-			else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::T) {
-				FPSclock.switchClock();
-			}
+		switch (option)
+		{
+		case 0:
+			return BattleCity::Game::GameState::SinglePlayerGame;
+			break;
+		case 1:
+			return BattleCity::Game::GameState::TwoPlayerGame;
+			break;
+		case 2:
+			return BattleCity::Game::GameState::EXIT;
+			break;
+		default:
+			return BattleCity::Game::GameState::EXIT;
 		}
 	}
 
+	
+
+	
 	void Game::singlePlayer()
 	{
 		sf::Event event;
-		while (window.pollEvent(event)) {
+		while (m_window.pollEvent(event)) {
 			// Press ESC or the X button in the window
 			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-				state = GameState::EXIT;
+				m_state = GameState::EXIT;
 
-			window.clear();
-			window.draw(m_tileMap);
-			window.display();
+			m_window.clear();
+			m_window.draw(m_tileMap);
+			m_window.display();
 		}
 	}
 
