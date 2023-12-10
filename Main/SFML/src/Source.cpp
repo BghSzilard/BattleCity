@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "SFMLMenu.h"
 #include "Game.h"
 
 #include <SFML/Graphics.hpp>
