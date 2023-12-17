@@ -12,7 +12,7 @@ set(SRC
     src/SFMLMenu.cpp
     src/TileMap.cpp
     src/Timer.cpp
-) 
+        src/TextureManager.cpp)
 
 add_executable(IS_BattleCity ${SRC})
 
