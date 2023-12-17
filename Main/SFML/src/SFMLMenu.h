@@ -4,6 +4,8 @@
 #include "INavigationStrategy.h"
 #include "Menu.h"
 
+#include <SFML/Graphics.hpp>
+
 #include <array>
 #include <string>
 #include <memory>
