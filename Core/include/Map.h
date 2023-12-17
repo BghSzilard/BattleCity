@@ -4,27 +4,31 @@
 #include <fstream>
 
 #include "DEFINITIONS.h"
+#include "GameConfig.h"
 
-namespace BattleCity
+#include "FileHandler.h"
+
+namespace BattleCity::GameLogic
 {
-    namespace GameLogic
+    class Map
     {
-        class Map
-        {
-        public:
-            Map() = default;
+    public:
+        Map();
 
-            // maybe create StreamReader->FileStreamReader
-            bool readFromFile(const std::string& );
+        // maybe create StreamReader/FileStreamReader (idk)
 
-            const size_t getWidth() const;
-            const size_t getHeight() const;
+        [[nodiscard]] size_t getWidth() const;
 
-            const int at(size_t row, size_t column) const;
+        [[nodiscard]] size_t getHeight() const;
 
-            //TODO: Values of matrix must be modifiable
-        private:
-            Matrix<int> m_map;
-        };
-    }
+        [[nodiscard]] int at(size_t row, size_t column) const;
+
+        //TODO: Values of matrix must be modifiable
+    private:
+
+        //Maybe create a "global" FileHandler and reference that from every class that needs it
+        FileHandler m_fileHandler;
+
+        Matrix<int> m_map;
+    };
 }
