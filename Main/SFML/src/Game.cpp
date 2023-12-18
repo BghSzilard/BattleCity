@@ -4,8 +4,10 @@
 
 namespace BattleCity
 {
-	Game::Game()
-    : m_tileMap()
+	Game::Game(TextureManager& textureManager)
+    :m_textureManager(textureManager)
+    , m_tileMap(textureManager)
+    , m_playerTank(textureManager)
 	{
 //		std::srand(unsigned(std::time(nullptr)));
 		// hardcoded screen size so that map nicely fills the screen (can be modified later)
@@ -106,6 +108,7 @@ namespace BattleCity
 
 			m_window.clear();
 			m_window.draw(m_tileMap);
+            m_window.draw(m_playerTank);
 			m_window.display();
 		}
 	}
