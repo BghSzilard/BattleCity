@@ -19,7 +19,6 @@ add_executable(IS_BattleCity ${SRC})
 target_link_libraries(IS_BattleCity PRIVATE Core)
 
 target_link_libraries(IS_BattleCity PRIVATE sfml-graphics sfml-window sfml-system)
-target_compile_features(IS_BattleCity PRIVATE cxx_std_17)
 
 if(WIN32)
     add_custom_command(
