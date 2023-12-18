@@ -10,7 +10,7 @@ public:
 	
 	virtual void move() = 0;
 
-private:
+protected:
 
 	float m_startX;
 	float m_startY;
