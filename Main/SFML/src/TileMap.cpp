@@ -13,8 +13,9 @@
 
 namespace BattleCity::SFML
 {
-    TileMap::TileMap()
+    TileMap::TileMap(TextureManager& textureManager)
             : m_mapModel()
+            , m_tileset(textureManager.getTilesTexture())
     {
         m_vertices.setPrimitiveType(sf::Triangles);
 
@@ -38,19 +39,17 @@ namespace BattleCity::SFML
                 sf::Vertex *triangles = &m_vertices[(i * width + j) * 6];
 
                 // define the 6 corners of the two triangles
-                triangles[0].position = sf::Vector2f((float) j * kTileSize, (float) i * kTileSize);
-                triangles[1].position = sf::Vector2f((float) (j + 1) * kTileSize, (float) i * kTileSize);
-                triangles[2].position = sf::Vector2f((float) j * kTileSize, (float) (i + 1) * kTileSize);
-                triangles[3].position = sf::Vector2f((float) j * kTileSize, (float) (i + 1) * kTileSize);
-                triangles[4].position = sf::Vector2f((float) (j + 1) * kTileSize, (float) i * kTileSize);
-                triangles[5].position = sf::Vector2f((float) (j + 1) * kTileSize, (float) (i + 1) * kTileSize);
+                triangles[0].position = sf::Vector2f((float) j * GameConfig::MAP_TILE_SIZE, (float) i * GameConfig::MAP_TILE_SIZE);
+                triangles[1].position = sf::Vector2f((float) (j + 1) * GameConfig::MAP_TILE_SIZE, (float) i * GameConfig::MAP_TILE_SIZE);
+                triangles[2].position = sf::Vector2f((float) j * GameConfig::MAP_TILE_SIZE, (float) (i + 1) * GameConfig::MAP_TILE_SIZE);
+                triangles[3].position = sf::Vector2f((float) j * GameConfig::MAP_TILE_SIZE, (float) (i + 1) * GameConfig::MAP_TILE_SIZE);
+                triangles[4].position = sf::Vector2f((float) (j + 1) * GameConfig::MAP_TILE_SIZE, (float) i * GameConfig::MAP_TILE_SIZE);
+                triangles[5].position = sf::Vector2f((float) (j + 1) * GameConfig::MAP_TILE_SIZE, (float) (i + 1) * GameConfig::MAP_TILE_SIZE);
             }
     }
 
     void TileMap::initMapTexture()
     {
-        m_tileset = m_textureManager.getTilesTexture();
-
         size_t width = m_mapModel.getWidth();
         size_t height = m_mapModel.getHeight();
 
@@ -64,18 +63,18 @@ namespace BattleCity::SFML
                 sf::Vertex *triangles = &m_vertices[(i * width + j) * 6];
 
                 // divide by 32 because tile textures in tileset.png are 32x32 each
-                const uint32_t scaleFactor = kTileSize / 32;
+                const uint32_t scaleFactor = GameConfig::MAP_TILE_SIZE / 32;
 
                 // define the 6 matching texture coordinates
-                triangles[0].texCoords = sf::Vector2f((float) tileNumber * kTileSize / scaleFactor, 0.f);
-                triangles[1].texCoords = sf::Vector2f((float) (tileNumber + 1) * kTileSize / scaleFactor, 0.f);
-                triangles[2].texCoords = sf::Vector2f((float) tileNumber * kTileSize / scaleFactor,
-                                                      (float) kTileSize / scaleFactor);
-                triangles[3].texCoords = sf::Vector2f((float) tileNumber * kTileSize / scaleFactor,
-                                                      (float) kTileSize / scaleFactor);
-                triangles[4].texCoords = sf::Vector2f((float) (tileNumber + 1) * kTileSize / scaleFactor, 0.f);
-                triangles[5].texCoords = sf::Vector2f((float) (tileNumber + 1) * kTileSize / scaleFactor,
-                                                      (float) kTileSize / scaleFactor);
+                triangles[0].texCoords = sf::Vector2f((float) tileNumber * GameConfig::MAP_TILE_SIZE / scaleFactor, 0.f);
+                triangles[1].texCoords = sf::Vector2f((float) (tileNumber + 1) * GameConfig::MAP_TILE_SIZE / scaleFactor, 0.f);
+                triangles[2].texCoords = sf::Vector2f((float) tileNumber * GameConfig::MAP_TILE_SIZE / scaleFactor,
+                                                      (float) GameConfig::MAP_TILE_SIZE / scaleFactor);
+                triangles[3].texCoords = sf::Vector2f((float) tileNumber * GameConfig::MAP_TILE_SIZE / scaleFactor,
+                                                      (float) GameConfig::MAP_TILE_SIZE / scaleFactor);
+                triangles[4].texCoords = sf::Vector2f((float) (tileNumber + 1) * GameConfig::MAP_TILE_SIZE / scaleFactor, 0.f);
+                triangles[5].texCoords = sf::Vector2f((float) (tileNumber + 1) * GameConfig::MAP_TILE_SIZE / scaleFactor,
+                                                      (float) GameConfig::MAP_TILE_SIZE / scaleFactor);
             }
     }
 

@@ -14,11 +14,10 @@ namespace BattleCity::SFML
     class TileMap : public sf::Drawable, public sf::Transformable
     {
     private:
-        const uint32_t kTileSize = 64;
 
     public:
 
-        TileMap();
+        explicit TileMap(TextureManager& manager);
 
         void initMap();
 
@@ -30,9 +29,7 @@ namespace BattleCity::SFML
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
         sf::VertexArray m_vertices;
-        sf::Texture m_tileset;
-
-        TextureManager m_textureManager;
+        sf::Texture& m_tileset;
 
         GameLogic::Map m_mapModel;
     };
