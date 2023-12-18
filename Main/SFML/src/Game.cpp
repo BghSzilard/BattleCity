@@ -4,16 +4,13 @@
 
 namespace BattleCity
 {
-	Game::Game() : m_FPSclock{ m_font }
+	Game::Game()
+    : m_tileMap()
 	{
-		std::srand(unsigned(std::time(nullptr)));
+//		std::srand(unsigned(std::time(nullptr)));
 		// hardcoded screen size so that map nicely fills the screen (can be modified later)
 		m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
 		m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
-
-		m_font.loadFromFile(GameConfig::FONT_PATH);
-		//move literals to Constants/Config header ofc
-		m_tileMap.load("core_assets/maps/map.txt", "sfml_assets/textures/tileset.png");
 
 		m_state = GameState::SFMLMenu;
 	}

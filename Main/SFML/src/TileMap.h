@@ -7,32 +7,33 @@
 #include "DEFINITIONS.h"
 
 #include "Map.h"
+#include "TextureManager.h"
 
-namespace BattleCity
+namespace BattleCity::SFML
 {
-    namespace SFML
+    class TileMap : public sf::Drawable, public sf::Transformable
     {
-        class TileMap : public sf::Drawable, public sf::Transformable
-        {
-        private:
-            const uint32_t kTileSize = 64;
+    private:
+        const uint32_t kTileSize = 64;
 
-        public:
+    public:
 
-            TileMap();
+        TileMap();
 
-            bool load(const std::string&, const std::string&);
-            bool setModel(const std::string&);
-            bool setTexture(const std::string&);
+        void initMap();
+
+        void initMapTexture();
 
 
-        private:
+    private:
 
-            virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-            sf::VertexArray m_vertices;
-            sf::Texture m_tileset;
-            GameLogic::Map m_mapModel;
-        };
-    }
+        sf::VertexArray m_vertices;
+        sf::Texture m_tileset;
+
+        TextureManager m_textureManager;
+
+        GameLogic::Map m_mapModel;
+    };
 }

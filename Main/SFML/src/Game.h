@@ -17,16 +17,14 @@ namespace BattleCity
 	private:
 		sf::RenderWindow m_window;
 
-		GameState m_icon;  // needed to determine the position of the tank in the menu
+//		GameState m_icon;  // needed to determine the position of the tank in the menu
 		GameState m_state; // current manu status of the game (menu, single, multi etc)
 
-		Sprite m_spr;
+//		Sprite m_spr;
 		SFML::TileMap m_tileMap;
 
-		sf::Font m_font;
-		Timer m_FPSclock;
-
 		void menu();
+
 		GameState determineGameState(int option);
 
 		void singlePlayer();
