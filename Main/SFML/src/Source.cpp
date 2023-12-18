@@ -5,6 +5,7 @@
 
 int main()
 {
-	BattleCity::Game MyGame;
+    BattleCity::TextureManager TextureManager;
+	BattleCity::Game MyGame(TextureManager);
 	MyGame.runGame();
 }
