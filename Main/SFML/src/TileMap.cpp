@@ -65,7 +65,6 @@ namespace BattleCity::SFML
 
                 // divide by 32 because tile textures in tileset.png are 32x32 each
                 const uint32_t scaleFactor = kTileSize / 32;
-
                 // define the 6 matching texture coordinates
                 triangles[0].texCoords = sf::Vector2f((float) tileNumber * kTileSize / scaleFactor, 0.f);
                 triangles[1].texCoords = sf::Vector2f((float) (tileNumber + 1) * kTileSize / scaleFactor, 0.f);

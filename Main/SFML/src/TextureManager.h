@@ -12,6 +12,7 @@ namespace BattleCity
         TextureManager() = default;
 
         sf::Texture getTilesTexture();
+        sf::Texture getBulletTexture();
 
     private:
         sf::Texture m_tilesTexture;

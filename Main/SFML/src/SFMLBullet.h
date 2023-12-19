@@ -1,18 +1,17 @@
 #pragma once
 
 #include "Bullet.h"
-#include "Sprite.h"
 #include "GameConfig.h"
 
 #include <SFML\Graphics.hpp>
 
-class SFMLBullet : public Bullet, public sf::Drawable
+class SFMLBullet : public sf::Drawable
 {
 public:
 
-	SFMLBullet(Sprite& sprite, float startX, float startY, GameConfig::Direction direction);
+	SFMLBullet(Sprite& sprite, float startX, float startY, GameConfig::MoveDirection direction);
 
 private:
 
-	Sprite m_sprite;
+	Bullet m_bullet;
 };
