@@ -6,11 +6,17 @@
 
 #include <SFML\Graphics.hpp>
 
-class SFMLBullet : public sf::Drawable, public sf::Transformable
+class SFMLBullet : public sf::Drawable
 {
 public:
 
-	SFMLBullet(float startX, float startY, GameConfig::MoveDirection direction);
+	SFMLBullet(float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType);
+
+	void move();
+
+	Position getPosition();
+	GameConfig::MoveDirection getDirection();
+	Bullet::BulletType getBulletType();
 
 private:
 

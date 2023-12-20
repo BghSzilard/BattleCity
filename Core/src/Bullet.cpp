@@ -1,35 +1,50 @@
 #include "Bullet.h"
+#include "MoveDownwardStrategy.h"
+#include "MoveUpwardStrategy.h"
+#include "MoveLeftwardStrategy.h"
+#include "MoveRightwardStrategy.h"
 
-//Bullet::Bullet(float startX, float startY, GameConfig::MoveDirection direction)
-//{
-//	m_startX = startX;
-//	m_startY = startY;
-//	m_direction = direction;
-//}
-
-void Bullet::setStartX(float startX)
+Bullet::Bullet(Position position, GameConfig::MoveDirection direction, BulletType bulletType)
 {
-	m_startX = startX;
-}
-
-void Bullet::setStartY(float startY)
-{
-	m_startY = startY;
-}
-
-void Bullet::setDirection(GameConfig::MoveDirection direction)
-{
+	m_position = position;
 	m_direction = direction;
+	m_bulletType = bulletType;
+
+	determineMoveStrategy();
 }
 
-float Bullet::getStartX()
+Bullet::BulletType Bullet::getBulletType()
 {
-	return m_startX;
+	return m_bulletType;
 }
 
-float Bullet::getStartY()
+void Bullet::determineMoveStrategy()
 {
-	return m_startY;
+	switch (m_direction)
+	{
+	case GameConfig::MoveDirection::LEFT:
+		m_moveStrategy = std::make_unique<MoveLeftwardStrategy>();
+		break;
+	case GameConfig::MoveDirection::RIGHT:
+		m_moveStrategy = std::make_unique<MoveRightwardStrategy>();
+		break;
+	case GameConfig::MoveDirection::UP:
+		m_moveStrategy = std::make_unique<MoveUpwardStrategy>();
+		break;
+	case GameConfig::MoveDirection::DOWN:
+		m_moveStrategy = std::make_unique<MoveDownwardStrategy>();
+		break;
+	}
+}
+
+void Bullet::move()
+{
+	m_position = m_moveStrategy->move(m_position, BULLET_SPEED);
+}
+
+Position Bullet::getPosition()
+{
+	return m_position;
 }
 
 GameConfig::MoveDirection Bullet::getDirection()

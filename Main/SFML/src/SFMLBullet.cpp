@@ -1,13 +1,34 @@
 #include "SFMLBullet.h"
 
-SFMLBullet::SFMLBullet(float startX, float startY, GameConfig::MoveDirection direction)
+SFMLBullet::SFMLBullet(float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType) 
+	: m_bullet({startX, startY}, direction, bulletType)
 {
-	m_bullet.setStartX(startX);
-	m_bullet.setStartY(startY);
-	m_bullet.setDirection(direction);
+	
 	m_sprite.setPosition(startX, startY);
 	setTexture();
 	setSprite();
+}
+
+void SFMLBullet::move()
+{
+	m_bullet.move();
+	auto position = m_bullet.getPosition();
+	m_sprite.setPosition(position.x, position.y);
+}
+
+Position SFMLBullet::getPosition()
+{
+	return m_bullet.getPosition();
+}
+
+GameConfig::MoveDirection SFMLBullet::getDirection()
+{
+	return m_bullet.getDirection();
+}
+
+Bullet::BulletType SFMLBullet::getBulletType()
+{
+	return m_bullet.getBulletType();
 }
 
 void SFMLBullet::setTexture()
