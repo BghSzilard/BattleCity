@@ -1,11 +1,11 @@
 #include "Bullet.h"
 
-Bullet::Bullet(float startX, float startY, GameConfig::Direction direction)
-{
-	m_startX = startX;
-	m_startY = startY;
-	m_direction = direction;
-}
+//Bullet::Bullet(float startX, float startY, GameConfig::MoveDirection direction)
+//{
+//	m_startX = startX;
+//	m_startY = startY;
+//	m_direction = direction;
+//}
 
 void Bullet::setStartX(float startX)
 {

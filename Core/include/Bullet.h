@@ -6,8 +6,7 @@ class Bullet
 {
 public:
 
-	//Might be a good idea to have a tank object in the constructor once it has been defined
-	Bullet(float startX, float startY, GameConfig::Direction direction);
+	Bullet() = default;
 
 	//for collision detection: player's bullets should kill enemy tanks, but enemy tanks shooting each other should not effect them
 	enum class BulletType
@@ -16,13 +15,13 @@ public:
 		EnemyBullet
 	};
 
-	public void setStartX(float startX);
-	public void setStartY(float startY);
-	public void setDirection(GameConfig::MoveDirection direction);
+	void setStartX(float startX);
+	void setStartY(float startY);
+	void setDirection(GameConfig::MoveDirection direction);
 
-	public float getStartX();
-	public float getStartY();
-	public GameConfig::MoveDirection getDirection();
+	float getStartX();
+	float getStartY();
+	GameConfig::MoveDirection getDirection();
 
 private:
 

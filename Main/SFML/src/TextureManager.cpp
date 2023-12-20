@@ -12,9 +12,9 @@ sf::Texture BattleCity::TextureManager::getTilesTexture()
 
 sf::Texture BattleCity::TextureManager::getBulletTexture()
 {
-    bool readSuccess = m_tilesTexture.loadFromFile(GameConfig::TILES_TEXTURE_PATH);
+    bool readSuccess = m_bulletTexture.loadFromFile(GameConfig::BULLET_TEXTURE_PATH);
 
     assert(readSuccess);
 
-    return m_tilesTexture;
+    return m_bulletTexture;
 }
