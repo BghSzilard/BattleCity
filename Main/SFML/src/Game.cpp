@@ -100,17 +100,7 @@ namespace BattleCity
 	void Game::singlePlayer()
 	{
 		sf::Event event;
-		SFMLBullet bullet(10, 40, GameConfig::MoveDirection::DOWN);
-
-		TextureManager m;
-		sf::Sprite sp;
-
-		auto texture = m.getBulletTexture();
-
-		sp.setTexture(texture);
-
-
-		sp.setTextureRect(sf::IntRect(10, 10, 32, 32));
+		SFMLBullet bullet(0, 0, GameConfig::MoveDirection::UP);
 
 		while (m_window.pollEvent(event)) {
 			// Press ESC or the X button in the window
@@ -118,8 +108,8 @@ namespace BattleCity
 				m_state = GameState::EXIT;
 
 			m_window.clear();
+			m_window.draw(m_tileMap);
 			m_window.draw(bullet);
-			//m_window.draw(m_tileMap);
 			m_window.display();
 		}
 	}
