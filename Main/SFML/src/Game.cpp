@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "SFMLMenu.h"
 #include "GameConfig.h"
+#include "SFMLBullet.h"
 
 namespace BattleCity
 {
@@ -99,15 +100,24 @@ namespace BattleCity
 	void Game::singlePlayer()
 	{
 		sf::Event event;
-		while (m_window.pollEvent(event)) {
-			// Press ESC or the X button in the window
-			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-				m_state = GameState::EXIT;
+		SFMLBullet bullet(0, 500, GameConfig::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet);
 
+		while (m_window.isOpen())
+		{
+			while (m_window.pollEvent(event)) 
+			{
+				if (event.type == sf::Event::Closed)
+					m_window.close();	
+			}
+
+			bullet.move();
 			m_window.clear();
 			m_window.draw(m_tileMap);
+			m_window.draw(bullet);
 			m_window.display();
-		}
-	}
 
+		}
+
+		m_state = GameState::EXIT;
+	}
 }
