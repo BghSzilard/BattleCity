@@ -8,7 +8,7 @@ FetchContent_MakeAvailable(SFML)
  
 set(SRC
     src/Source.cpp
-    src/Game.cpp 
+    src/Game.cpp     
     src/SFMLMenu.cpp
     src/TileMap.cpp
     src/Timer.cpp
