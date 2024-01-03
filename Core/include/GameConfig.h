@@ -5,6 +5,8 @@
 namespace GameConfig
 {
     inline const std::string WINDOW_NAME = "Battle City";
+    inline const int SCREEN_WIDTH = 1024;
+    inline const int SCREEN_HEIGHT = 1024;
     inline const int FRAME_LIMIT = 60;
     inline const std::string FONT_PATH = "sfml_assets/fonts/joystix monospace.ttf";
     inline const std::string TILES_TEXTURE_PATH = "sfml_assets/textures/tileset.png";

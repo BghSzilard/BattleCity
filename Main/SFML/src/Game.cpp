@@ -10,7 +10,7 @@ namespace BattleCity
 	{
 //		std::srand(unsigned(std::time(nullptr)));
 		// hardcoded screen size so that map nicely fills the screen (can be modified later)
-		m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
+		m_window.create(sf::VideoMode(GameConfig::SCREEN_WIDTH, GameConfig::SCREEN_HEIGHT), GameConfig::WINDOW_NAME);
 		m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
 
 		m_state = GameState::SFMLMenu;
