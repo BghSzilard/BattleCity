@@ -2,6 +2,7 @@
 #include "SFMLMenu.h"
 #include "GameConfig.h"
 #include "SFMLBullet.h"
+#include "SFMLEagle.h"
 
 namespace BattleCity
 {
@@ -101,6 +102,7 @@ namespace BattleCity
 	{
 		sf::Event event;
 		SFMLBullet bullet(0, 500, GameConfig::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet);
+		SFMLEagle eagle;
 
 		while (m_window.isOpen())
 		{
@@ -110,10 +112,11 @@ namespace BattleCity
 					m_window.close();	
 			}
 
-			bullet.move();
+			//bullet.move();
 			m_window.clear();
 			m_window.draw(m_tileMap);
 			m_window.draw(bullet);
+			m_window.draw(eagle);
 			m_window.display();
 
 		}

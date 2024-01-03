@@ -14,6 +14,7 @@ set(SRC
     src/Timer.cpp
     src/TextureManager.cpp
     src/SFMLBullet.cpp
+    src/SFMLEagle.cpp
 )
 
 add_executable(IS_BattleCity ${SRC})
