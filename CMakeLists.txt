@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
 
-set(CMAKE_CXX_STANDARD 17)
-
 project(IS_BattleCity LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
