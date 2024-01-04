@@ -18,3 +18,12 @@ sf::Texture BattleCity::TextureManager::getBulletTexture()
 
     return m_bulletTexture;
 }
+
+sf::Texture BattleCity::TextureManager::getEagleTexture()
+{
+    bool readSuccess = m_eagleTexture.loadFromFile(GameConfig::EAGLE_TEXTURE_PATH);
+
+    assert(readSuccess);
+
+    return m_eagleTexture;
+}

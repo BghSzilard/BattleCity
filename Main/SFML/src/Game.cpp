@@ -2,6 +2,7 @@
 #include "SFMLMenu.h"
 #include "GameConfig.h"
 #include "SFMLBullet.h"
+#include "SFMLEagle.h"
 
 namespace BattleCity
 {
@@ -10,7 +11,7 @@ namespace BattleCity
 	{
 //		std::srand(unsigned(std::time(nullptr)));
 		// hardcoded screen size so that map nicely fills the screen (can be modified later)
-		m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
+		m_window.create(sf::VideoMode(GameConfig::SCREEN_WIDTH, GameConfig::SCREEN_HEIGHT), GameConfig::WINDOW_NAME);
 		m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
 
 		m_state = GameState::SFMLMenu;
@@ -101,6 +102,7 @@ namespace BattleCity
 	{
 		sf::Event event;
 		SFMLBullet bullet(0, 500, GameConfig::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet);
+		SFMLEagle eagle;
 
 		while (m_window.isOpen())
 		{
@@ -110,10 +112,11 @@ namespace BattleCity
 					m_window.close();	
 			}
 
-			bullet.move();
+			//bullet.move();
 			m_window.clear();
 			m_window.draw(m_tileMap);
 			m_window.draw(bullet);
+			m_window.draw(eagle);
 			m_window.display();
 
 		}
