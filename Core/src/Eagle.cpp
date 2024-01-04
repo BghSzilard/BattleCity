@@ -1,5 +1,5 @@
 #include "Eagle.h"
-#include "Gameconfig.h"
+#include "GameConfig.h"
 
 Eagle::Eagle() : m_position{ GameConfig::SCREEN_WIDTH / 2, GameConfig::SCREEN_HEIGHT - 100}
 {
