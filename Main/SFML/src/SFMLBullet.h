@@ -4,7 +4,7 @@
 #include "GameConfig.h"
 #include "TextureManager.h"
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 class SFMLBullet : public sf::Drawable
 {

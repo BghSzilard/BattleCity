@@ -1,7 +1,7 @@
 #include "Eagle.h"
 #include "TextureManager.h"
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 class SFMLEagle : public sf::Drawable
 {
