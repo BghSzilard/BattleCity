@@ -7,11 +7,12 @@
 BattleCity::GameLogic::Tank::Tank()
     : m_xPos(GameConfig::INITIAL_TANK_POS_X)
     , m_yPos(GameConfig::INITIAL_TANK_POS_Y)
+    , m_tankSpeed(GameConfig::TANK_SPEED)
 {
 
 }
 
-void BattleCity::GameLogic::Tank::setPosition(int x, int y)
+void BattleCity::GameLogic::Tank::setPosition(float x, float y)
 {
     // TODO: asserts
     assert(0 <= x);
@@ -21,13 +22,18 @@ void BattleCity::GameLogic::Tank::setPosition(int x, int y)
     m_yPos = y;
 }
 
-int BattleCity::GameLogic::Tank::getXPosition() const
+float BattleCity::GameLogic::Tank::getXPosition() const
 {
     return m_xPos;
 }
 
-int BattleCity::GameLogic::Tank::getYPosition() const
+float BattleCity::GameLogic::Tank::getYPosition() const
 {
     return m_yPos;
+}
+
+int BattleCity::GameLogic::Tank::getTankSpeed() const
+{
+    return m_tankSpeed;
 }
 

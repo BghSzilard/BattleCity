@@ -15,13 +15,16 @@ namespace BattleCity::GameLogic
     public:
         Tank();
 
-        void setPosition(int x, int y);
+        void setPosition(float x, float y);
 
-        [[nodiscard]] int getXPosition() const;
+        [[nodiscard]] float getXPosition() const;
 
-        [[nodiscard]] int getYPosition() const;
+        [[nodiscard]] float getYPosition() const;
 
+        [[nodiscard]] int getTankSpeed() const;
+        // this function moves tank relative to current position
     private:
-        int m_xPos, m_yPos;
+        float m_xPos, m_yPos;
+        int m_tankSpeed;
     };
 }

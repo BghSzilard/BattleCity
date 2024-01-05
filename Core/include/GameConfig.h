@@ -13,6 +13,8 @@ namespace GameConfig
     inline const std::array<std::string, 3> OPTIONS = { "1 player", "2 players", "Exit" };
 
     const uint32_t MAP_TILE_SIZE = 64;
-    constexpr int INITIAL_TANK_POS_X = 0;
-    constexpr int INITIAL_TANK_POS_Y = 0;
+    constexpr int INITIAL_TANK_POS_X = 256;
+    constexpr int INITIAL_TANK_POS_Y = 256;
+
+    constexpr int TANK_SPEED = 3;
 }
