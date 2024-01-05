@@ -13,9 +13,10 @@
 
 namespace BattleCity::SFML
 {
-    TileMap::TileMap()
-            : m_mapModel()
-            , m_tileset(textureManager.getTilesTexture())
+    TileMap::TileMap(TextureManager& manager)
+            : m_textureManager(manager)
+            , m_mapModel()
+            , m_tileset(manager.getTilesTexture())
     {
         m_vertices.setPrimitiveType(sf::Triangles);
 
