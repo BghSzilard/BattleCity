@@ -6,6 +6,7 @@
 
 #include "GameConfig.h"
 #include "Entity.h"
+#include "ITankMovementStrategy.h"
 
 #include <cassert>
 
@@ -33,6 +34,10 @@ namespace BattleCity::GameLogic
         int m_width, m_height;
         int m_tankSpeed;
         GameConfig::MoveDirection m_tankDirection;
+
+        ITankMovementStrategy* m_tankMovementStrategy;
+
+
     public:
         [[nodiscard]] GameConfig::MoveDirection getTankDirection() const;
 
