@@ -51,3 +51,13 @@ GameConfig::MoveDirection Bullet::getDirection()
 {
 	return m_direction;
 }
+
+int Bullet::getWidth()
+{
+	return m_width;
+}
+
+int Bullet::getHeight()
+{
+	return m_height;
+}

@@ -22,6 +22,8 @@ public:
 	Position getPosition() const;
 	GameConfig::MoveDirection getDirection();
 	BulletType getBulletType();
+	int getWidth();
+	int getHeight();
 
 	void move();
 
@@ -29,6 +31,8 @@ private:
 
 	void determineMoveStrategy();
 	
+	int m_height, m_width;
+
 	std::unique_ptr<IMoveStrategy> m_moveStrategy;
 	Position m_position;
 	GameConfig::MoveDirection m_direction;
