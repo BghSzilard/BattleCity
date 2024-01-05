@@ -14,6 +14,9 @@ namespace BattleCity::GameLogic
 	private:
 
 		void checkEnemyTankPlayerBulletCollision();
+		void checkPlayerTankEnemyBulletCollision();
+		void checkPlayerBulletEnemyBulletCollision();
+		//void checkPlayerTankEnemyTankCollision();
 
 		bool isCollision(int x1, int x2, int width1, int width2, int y1, int y2, int height1, int height2);
 
