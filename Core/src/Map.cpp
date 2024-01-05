@@ -2,9 +2,9 @@
 
 namespace BattleCity::GameLogic
 {
-    Map::Map()
+    Map::Map(Matrix<int> tiles)
     {
-        m_map = m_fileHandler.getMapData();
+        m_map = std::move(tiles);
     }
 
     size_t Map::getWidth() const
