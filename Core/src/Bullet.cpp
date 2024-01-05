@@ -13,7 +13,7 @@ Bullet::Bullet(Position position, GameConfig::MoveDirection direction, BulletTyp
 	determineMoveStrategy();
 }
 
-Bullet::BulletType Bullet::getBulletType()
+Bullet::BulletType Bullet::getBulletType() const
 {
 	return m_bulletType;
 }
@@ -47,7 +47,18 @@ Position Bullet::getPosition() const
 	return m_position;
 }
 
-GameConfig::MoveDirection Bullet::getDirection()
+GameConfig::MoveDirection Bullet::getDirection() const
 {
 	return m_direction;
+}
+
+void Bullet::setDirection(GameConfig::MoveDirection direction)
+{
+	m_direction = direction;
+	determineMoveStrategy();
+}
+
+float Bullet::getSpeed() const
+{
+	return BULLET_SPEED;
 }

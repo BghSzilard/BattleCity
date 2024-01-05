@@ -20,8 +20,10 @@ public:
 	Bullet(Position position, GameConfig::MoveDirection direction, BulletType bulletType);
 
 	Position getPosition() const;
-	GameConfig::MoveDirection getDirection();
-	BulletType getBulletType();
+	GameConfig::MoveDirection getDirection() const;
+	void setDirection(GameConfig::MoveDirection direction);
+	BulletType getBulletType() const;
+	float getSpeed() const;
 
 	void move();
 
