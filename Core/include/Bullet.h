@@ -3,10 +3,11 @@
 #include "GameConfig.h"
 #include "Position.h"
 #include "IMoveStrategy.h"
+#include "Entity.h"
 
 #include <memory>
 
-class Bullet
+class Bullet : public Entity
 {
 public:
 

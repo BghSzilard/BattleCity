@@ -27,9 +27,10 @@ void BattleCity::GameLogic::GameLogic::checkEnemyTankPlayerBulletCollision()
 
 bool BattleCity::GameLogic::GameLogic::isCollision(int x1, int x2, int width1, int width2, int y1, int y2, int height1, int height2)
 {
-	if (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 && y1 + height1 > y2) {
-		return true; // Collision detected
+	if (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 && y1 + height1 > y2) 
+	{
+		return true; 
 	}
 
-	return false; // No collision
+	return false;
 }

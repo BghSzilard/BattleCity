@@ -5,12 +5,13 @@
 #pragma once
 
 #include "GameConfig.h"
+#include "Entity.h"
 
 #include <cassert>
 
 namespace BattleCity::GameLogic
 {
-    class Tank
+    class Tank : public Entity
     {
     public:
         Tank();
