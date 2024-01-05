@@ -8,20 +8,22 @@ FetchContent_MakeAvailable(SFML)
  
 set(SRC
     src/Source.cpp
-    src/Game.cpp     
+    src/Game.cpp 
     src/SFMLMenu.cpp
     src/TileMap.cpp
     src/Timer.cpp
     src/TextureManager.cpp
     src/SFMLBullet.cpp
     src/SFMLEagle.cpp
-)
+    src/SFMLTank.cpp
+        )
 
 add_executable(IS_BattleCity ${SRC})
 
 target_link_libraries(IS_BattleCity PRIVATE Core)
 
 target_link_libraries(IS_BattleCity PRIVATE sfml-graphics sfml-window sfml-system)
+target_compile_features(IS_BattleCity PRIVATE cxx_std_17)
 
 if(WIN32)
     add_custom_command(
