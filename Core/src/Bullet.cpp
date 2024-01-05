@@ -52,6 +52,17 @@ GameConfig::MoveDirection Bullet::getDirection() const
 	return m_direction;
 }
 
+
+int Bullet::getWidth() const
+{
+	return m_width;
+}
+
+int Bullet::getHeight() const
+{
+	return m_height;
+}
+
 void Bullet::setDirection(GameConfig::MoveDirection direction)
 {
 	m_direction = direction;
@@ -60,5 +71,6 @@ void Bullet::setDirection(GameConfig::MoveDirection direction)
 
 float Bullet::getSpeed() const
 {
-	return BULLET_SPEED;
+	return GameConfig::BULLET_SPEED;
 }
+

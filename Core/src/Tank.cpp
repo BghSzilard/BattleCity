@@ -8,6 +8,8 @@ BattleCity::GameLogic::Tank::Tank()
     : m_xPos(GameConfig::INITIAL_TANK_POS_X)
     , m_yPos(GameConfig::INITIAL_TANK_POS_Y)
     , m_tankSpeed(GameConfig::TANK_SPEED)
+    , m_width(64)
+    , m_height(64)
 {
 
 }
@@ -37,6 +39,15 @@ int BattleCity::GameLogic::Tank::getTankSpeed() const
     return m_tankSpeed;
 }
 
+int BattleCity::GameLogic::Tank::getHeight() const
+{
+    return m_height;
+}
+
+int BattleCity::GameLogic::Tank::getWidth() const
+{
+    return m_width;
+}
 GameConfig::MoveDirection BattleCity::GameLogic::Tank::getTankDirection() const
 {
     return m_tankDirection;

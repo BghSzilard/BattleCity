@@ -3,10 +3,11 @@
 #include "GameConfig.h"
 #include "Position.h"
 #include "IMoveStrategy.h"
+#include "Entity.h"
 
 #include <memory>
 
-class Bullet
+class Bullet : public Entity
 {
 public:
 
@@ -20,10 +21,13 @@ public:
 	Bullet(Position position, GameConfig::MoveDirection direction, BulletType bulletType);
 
 	Position getPosition() const;
+	int getWidth() const;
+	int getHeight() const;
 	GameConfig::MoveDirection getDirection() const;
 	void setDirection(GameConfig::MoveDirection direction);
 	BulletType getBulletType() const;
 	float getSpeed() const;
+
 
 	void move();
 
@@ -31,6 +35,8 @@ private:
 
 	void determineMoveStrategy();
 	
+	int m_height, m_width;
+
 	std::unique_ptr<IMoveStrategy> m_moveStrategy;
 	Position m_position;
 	GameConfig::MoveDirection m_direction;

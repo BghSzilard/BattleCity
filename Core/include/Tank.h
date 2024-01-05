@@ -5,12 +5,13 @@
 #pragma once
 
 #include "GameConfig.h"
+#include "Entity.h"
 
 #include <cassert>
 
 namespace BattleCity::GameLogic
 {
-    class Tank
+    class Tank : public Entity
     {
     public:
         Tank();
@@ -21,10 +22,15 @@ namespace BattleCity::GameLogic
 
         [[nodiscard]] float getYPosition() const;
 
+        [[nodiscard]] int getHeight() const;
+
+        [[nodiscard]] int getWidth() const;
+
         [[nodiscard]] int getTankSpeed() const;
         // this function moves tank relative to current position
     private:
         float m_xPos, m_yPos;
+        int m_width, m_height;
         int m_tankSpeed;
         GameConfig::MoveDirection m_tankDirection;
     public:
