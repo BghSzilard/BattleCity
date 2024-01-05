@@ -1,7 +1,7 @@
 #include "SFMLBullet.h"
 
 SFMLBullet::SFMLBullet(BattleCity::TextureManager& textureManager, float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType)
-	: m_bullet({startX, startY}, direction, bulletType),
+	: m_bullet(Position(startX, startY), direction, bulletType),
     m_textureManager(textureManager),
     m_texture(textureManager.getBulletTexture())
 {

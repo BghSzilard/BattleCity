@@ -138,7 +138,6 @@ namespace BattleCity
         {
             m_playerTank.setMoveDirection(GameConfig::MoveDirection::DOWN);
             m_playerTank.moveTank(0, 1.f * GameConfig::TANK_SPEED);
-            m_enemyTanks[0].shootBullet();
         }
         if (!m_playerBullet && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
