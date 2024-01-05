@@ -27,4 +27,9 @@ namespace BattleCity::GameLogic
         return m_map[row][column];
     }
 
+    int& Map::at(size_t row, size_t column)
+    {
+        return m_map[row][column];
+    }
+
 }
