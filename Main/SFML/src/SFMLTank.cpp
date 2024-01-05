@@ -4,18 +4,16 @@
 
 #include "SFMLTank.h"
 
-BattleCity::SFML::SFMLTank::SFMLTank(TextureManager& textureManager)
-        : m_tankModel(),
+BattleCity::SFML::SFMLTank::SFMLTank(TextureManager& textureManager, sf::Vector2f position)
+        : m_tankModel(position.x, position.y),
         m_textureManager(textureManager)
         , m_tankTexture(textureManager.getTankTexture())
 {
-    // define the position of the triangle's points
     m_tankSprite.setTexture(m_tankTexture);
 
-    //texture is 512x512, and we want the tank to be the same size as the tiles (64x64) => scale by a factor of 1/8=0.125
     m_tankSprite.setOrigin(sf::Vector2f(m_tankSprite.getLocalBounds().width , m_tankSprite.getLocalBounds().height)/2.f);
-    this->setOrigin(sf::Vector2f(m_tankSprite.getLocalBounds().width , m_tankSprite.getLocalBounds().height)/2.f);
 
+    //texture is 512x512, and we want the tank to be the same size as the tiles (64x64) => scale by a factor of 1/8=0.125
     m_tankSprite.setScale(0.125f, 0.125f);
     m_tankSprite.setPosition(m_tankModel.getXPosition(), m_tankModel.getYPosition());
     this->setPosition(m_tankModel.getXPosition(), m_tankModel.getYPosition());
@@ -44,7 +42,8 @@ void BattleCity::SFML::SFMLTank::moveTank(float x, float y)
 {
 
     m_tankModel.setPosition(m_tankModel.getXPosition()+x, m_tankModel.getYPosition()+y);
-    this->move(x, y);
+//    m_tankSprite.move(x, y);
+    m_tankSprite.move(x, y);
 }
 
 void BattleCity::SFML::SFMLTank::setOnBulletShot(BattleCity::SFML::SFMLTank::OnBulletShotCallback &&callback)
@@ -69,4 +68,5 @@ GameConfig::MoveDirection BattleCity::SFML::SFMLTank::getMoveDirection()
 void BattleCity::SFML::SFMLTank::setMoveDirection(GameConfig::MoveDirection direction)
 {
     m_tankModel.setTankDirection(direction);
+    m_tankSprite.setRotation((float)static_cast<int>(direction));
 }

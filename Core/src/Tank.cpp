@@ -4,13 +4,12 @@
 
 #include "Tank.h"
 
-BattleCity::GameLogic::Tank::Tank()
-    : m_xPos(GameConfig::INITIAL_TANK_POS_X)
-    , m_yPos(GameConfig::INITIAL_TANK_POS_Y)
-    , m_tankSpeed(GameConfig::TANK_SPEED)
-{
-
-}
+BattleCity::GameLogic::Tank::Tank(float x, float y)
+    : m_tankSpeed(GameConfig::TANK_SPEED)
+    , m_xPos(x)
+    , m_yPos(y)
+    , m_tankDirection(GameConfig::MoveDirection::DOWN)
+{}
 
 void BattleCity::GameLogic::Tank::setPosition(float x, float y)
 {

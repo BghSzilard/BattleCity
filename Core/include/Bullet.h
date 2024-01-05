@@ -25,11 +25,12 @@ public:
 
 	void move();
 
+    ~Bullet();
 private:
 
 	void determineMoveStrategy();
 	
-	std::unique_ptr<IMoveStrategy> m_moveStrategy;
+	IMoveStrategy* m_moveStrategy;
 	Position m_position;
 	GameConfig::MoveDirection m_direction;
 	BulletType m_bulletType;

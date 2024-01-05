@@ -13,7 +13,7 @@ namespace BattleCity::GameLogic
     class Tank
     {
     public:
-        Tank();
+        Tank(float x, float y);
 
         void setPosition(float x, float y);
 

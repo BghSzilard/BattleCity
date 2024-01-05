@@ -30,9 +30,9 @@ namespace BattleCity
 		SFML::TileMap m_tileMap;
         SFML::SFMLTank m_playerTank;
 
-        std::unique_ptr<SFMLBullet> m_playerBullet;
+        std::vector<SFML::SFMLTank> m_enemyTanks;
 
-        bool m_playerBulletShot;
+        std::unique_ptr<SFMLBullet> m_playerBullet;
 
 		void menu();
 

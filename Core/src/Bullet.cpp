@@ -23,16 +23,16 @@ void Bullet::determineMoveStrategy()
 	switch (m_direction)
 	{
 	case GameConfig::MoveDirection::LEFT:
-		m_moveStrategy = std::make_unique<MoveLeftwardStrategy>();
+		m_moveStrategy = new MoveLeftwardStrategy();
 		break;
 	case GameConfig::MoveDirection::RIGHT:
-		m_moveStrategy = std::make_unique<MoveRightwardStrategy>();
+		m_moveStrategy = new MoveRightwardStrategy();
 		break;
 	case GameConfig::MoveDirection::UP:
-		m_moveStrategy = std::make_unique<MoveUpwardStrategy>();
+		m_moveStrategy = new MoveUpwardStrategy();
 		break;
 	case GameConfig::MoveDirection::DOWN:
-		m_moveStrategy = std::make_unique<MoveDownwardStrategy>();
+		m_moveStrategy = new MoveDownwardStrategy();
 		break;
 	}
 }
@@ -50,4 +50,9 @@ Position Bullet::getPosition() const
 GameConfig::MoveDirection Bullet::getDirection()
 {
 	return m_direction;
+}
+
+Bullet::~Bullet()
+{
+    // can't delete...
 }

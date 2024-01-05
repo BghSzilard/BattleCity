@@ -23,7 +23,7 @@ namespace BattleCity::SFML
 
         void shootBullet();
 
-        explicit SFMLTank(TextureManager& textureManager);
+        explicit SFMLTank(TextureManager& textureManager, sf::Vector2f position);
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

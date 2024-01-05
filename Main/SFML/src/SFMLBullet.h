@@ -17,6 +17,16 @@ public:
 	Position getPosition() const;
 	GameConfig::MoveDirection getDirection();
 	Bullet::BulletType getBulletType();
+
+    SFMLBullet& operator=(const SFMLBullet& other)
+    {
+        m_bullet = other.m_bullet;
+        m_sprite = other.m_sprite;
+        m_texture = other.m_texture;
+        m_textureManager = other.m_textureManager;
+
+        return *this;
+    }
 private:
 
 	void setTexture();
