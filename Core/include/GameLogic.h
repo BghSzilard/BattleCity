@@ -13,7 +13,14 @@ namespace BattleCity::GameLogic
 
 	private:
 
-		std::vector<Tank> m_tanks;
-		std::vector<Bullet> m_bullets;
+		void checkEnemyTankPlayerBulletCollision();
+
+		bool isCollision(int x1, int x2, int width1, int width2, int y1, int y2, int height1, int height2);
+
+		std::vector<Tank> m_enemyTanks;
+		std::vector<Tank> m_playerTanks;
+		std::vector<Bullet> m_playerBullets;
+		std::vector<Bullet> m_enemyBullets;
+		
 	};
 }
