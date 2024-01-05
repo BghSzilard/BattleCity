@@ -1,7 +1,7 @@
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 file(GLOB SRC src/*.cpp)
 
-add_library(Core STATIC ${SRC})
+add_library(Core STATIC ${SRC} include/TankFactory.h)
 
 target_include_directories(Core
         PUBLIC
