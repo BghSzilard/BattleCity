@@ -5,7 +5,8 @@
 #include "SFMLTank.h"
 
 BattleCity::SFML::SFMLTank::SFMLTank(TextureManager& textureManager)
-        : m_tankModel()
+        : m_tankModel(),
+        m_textureManager(textureManager)
         , m_tankTexture(textureManager.getTankTexture())
 {
     // define the position of the triangle's points
@@ -44,4 +45,28 @@ void BattleCity::SFML::SFMLTank::moveTank(float x, float y)
 
     m_tankModel.setPosition(m_tankModel.getXPosition()+x, m_tankModel.getYPosition()+y);
     this->move(x, y);
+}
+
+void BattleCity::SFML::SFMLTank::setOnBulletShot(BattleCity::SFML::SFMLTank::OnBulletShotCallback &&callback)
+{
+    onBulletShot = std::move(callback);
+}
+
+void BattleCity::SFML::SFMLTank::shootBullet()
+{
+    // ... do some shit
+    SFMLBullet bullet{ m_textureManager, m_tankModel.getXPosition(), m_tankModel.getYPosition(), getMoveDirection(), Bullet::BulletType::PlayerBullet };
+    if (onBulletShot) {
+        onBulletShot(*this, std::move(bullet));
+    }
+}
+
+GameConfig::MoveDirection BattleCity::SFML::SFMLTank::getMoveDirection()
+{
+    return m_tankModel.getTankDirection();
+}
+
+void BattleCity::SFML::SFMLTank::setMoveDirection(GameConfig::MoveDirection direction)
+{
+    m_tankModel.setTankDirection(direction);
 }

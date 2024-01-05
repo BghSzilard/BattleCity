@@ -37,3 +37,13 @@ int BattleCity::GameLogic::Tank::getTankSpeed() const
     return m_tankSpeed;
 }
 
+GameConfig::MoveDirection BattleCity::GameLogic::Tank::getTankDirection() const
+{
+    return m_tankDirection;
+}
+
+void BattleCity::GameLogic::Tank::setTankDirection(GameConfig::MoveDirection mTankDirection)
+{
+    m_tankDirection = mTankDirection;
+}
+

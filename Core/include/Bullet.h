@@ -30,8 +30,6 @@ public:
 private:
 
 	void determineMoveStrategy();
-
-	const float BULLET_SPEED = 10;
 	
 	std::unique_ptr<IMoveStrategy> m_moveStrategy;
 	Position m_position;

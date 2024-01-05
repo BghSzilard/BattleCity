@@ -1,11 +1,12 @@
 #include "SFMLBullet.h"
 
-SFMLBullet::SFMLBullet(float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType) 
-	: m_bullet({startX, startY}, direction, bulletType)
+SFMLBullet::SFMLBullet(BattleCity::TextureManager& textureManager, float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType)
+	: m_bullet({startX, startY}, direction, bulletType),
+    m_textureManager(textureManager),
+    m_texture(textureManager.getBulletTexture())
 {
-	
 	m_sprite.setPosition(startX, startY);
-	setTexture();
+//	setTexture();
 	setSprite();
 }
 
@@ -16,7 +17,7 @@ void SFMLBullet::move()
 	m_sprite.setPosition(position.x, position.y);
 }
 
-Position SFMLBullet::getPosition()
+Position SFMLBullet::getPosition() const
 {
 	return m_bullet.getPosition();
 }
@@ -62,5 +63,8 @@ void SFMLBullet::setSprite()
 
 void SFMLBullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(m_sprite);
+    // apply the texture
+    states.texture = &m_texture;
+
+	target.draw(m_sprite, states);
 }

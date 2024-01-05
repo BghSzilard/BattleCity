@@ -39,7 +39,7 @@ void Bullet::determineMoveStrategy()
 
 void Bullet::move()
 {
-	m_position = m_moveStrategy->move(m_position, BULLET_SPEED);
+	m_position = m_moveStrategy->move(m_position, GameConfig::BULLET_SPEED);
 }
 
 Position Bullet::getPosition() const

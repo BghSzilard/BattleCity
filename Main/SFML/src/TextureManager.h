@@ -13,7 +13,7 @@ namespace BattleCity
     public:
         TextureManager() = default;
 
-        sf::Texture getBulletTexture();
+        sf::Texture& getBulletTexture();
         sf::Texture getEagleTexture();
         sf::Texture& getTilesTexture();
 
