@@ -21,6 +21,7 @@ namespace GameConfig
     constexpr int INITIAL_TANK_POS_Y = 256;
 
     constexpr int TANK_SPEED = 3;
+    constexpr float BULLET_SPEED = 10;
 
     enum class MoveDirection {
         UP,

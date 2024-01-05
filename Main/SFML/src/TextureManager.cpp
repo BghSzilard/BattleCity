@@ -33,7 +33,7 @@ sf::Texture& BattleCity::TextureManager::getTankTexture()
     return m_tankTexture.value();
 }
 
-sf::Texture BattleCity::TextureManager::getBulletTexture()
+sf::Texture& BattleCity::TextureManager::getBulletTexture()
 {
     bool readSuccess = m_bulletTexture.loadFromFile(GameConfig::BULLET_TEXTURE_PATH);
 

@@ -26,5 +26,10 @@ namespace BattleCity::GameLogic
     private:
         float m_xPos, m_yPos;
         int m_tankSpeed;
+        GameConfig::MoveDirection m_tankDirection;
+    public:
+        [[nodiscard]] GameConfig::MoveDirection getTankDirection() const;
+
+        void setTankDirection(GameConfig::MoveDirection mTankDirection);
     };
 }
