@@ -101,16 +101,41 @@ namespace BattleCity
 	void Game::singlePlayer()
 	{
 		sf::Event event;
-		while (m_window.pollEvent(event)) {
+		while (m_window.pollEvent(event))
+        {
 			// Press ESC or the X button in the window
 			if (event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 				m_state = GameState::EXIT;
 
-			m_window.clear();
-			m_window.draw(m_tileMap);
-            m_window.draw(m_playerTank);
-			m_window.display();
 		}
+
+
+        // TODO: Check bounds of screen
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            m_playerTank.move(-1.0f * GameConfig::TANK_SPEED, 0);
+            m_playerTank.setRotation(270.f);
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+            m_playerTank.move(1.0f * GameConfig::TANK_SPEED, 0);
+            m_playerTank.setRotation(90.f);
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        {
+            m_playerTank.move(0, -1.f * GameConfig::TANK_SPEED);
+            m_playerTank.setRotation(0);
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        {
+            m_playerTank.move(0, 1.f * GameConfig::TANK_SPEED);
+            m_playerTank.setRotation(180.f);
+        }
+
+        m_window.clear();
+        m_window.draw(m_tileMap);
+        m_window.draw(m_playerTank);
+        m_window.display();
 	}
 
 }

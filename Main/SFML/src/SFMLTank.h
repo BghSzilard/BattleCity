@@ -17,6 +17,9 @@ namespace BattleCity::SFML
         explicit SFMLTank(TextureManager& textureManager);
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+        // this function moves the tank relative to its current position
+        void moveTank(float x, float y);
     private:
         void initTankTexture();
 
