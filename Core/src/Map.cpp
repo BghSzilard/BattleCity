@@ -2,9 +2,9 @@
 
 namespace BattleCity::GameLogic
 {
-    Map::Map()
+    Map::Map(Matrix<int> tiles)
     {
-        m_map = m_fileHandler.getMapData();
+        m_map = std::move(tiles);
     }
 
     size_t Map::getWidth() const
@@ -24,6 +24,11 @@ namespace BattleCity::GameLogic
         if (row >= m_map.size() || column >= m_map[0].size())
             return -1;
 
+        return m_map[row][column];
+    }
+
+    int& Map::at(size_t row, size_t column)
+    {
         return m_map[row][column];
     }
 

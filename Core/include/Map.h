@@ -2,6 +2,7 @@
 
 #include <string>
 #include <fstream>
+#include <memory>
 
 #include "DEFINITIONS.h"
 #include "GameConfig.h"
@@ -13,7 +14,7 @@ namespace BattleCity::GameLogic
     class Map
     {
     public:
-        Map();
+        Map(Matrix<int> tiles);
 
         // maybe create StreamReader/FileStreamReader (idk)
 
@@ -23,12 +24,10 @@ namespace BattleCity::GameLogic
 
         [[nodiscard]] int at(size_t row, size_t column) const;
 
+        [[nodiscard]] int& at(size_t row, size_t column);
+
         //TODO: Values of matrix must be modifiable
     private:
-
-        //Maybe create a "global" FileHandler and reference that from every class that needs it
-        FileHandler m_fileHandler;
-
         Matrix<int> m_map;
     };
 }
