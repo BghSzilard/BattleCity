@@ -96,6 +96,13 @@ struct CollSize {
 	int w, h;
 };
 
+CollSize getCollisionSize(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2)
+{
+	int w = width1 + width2 + std::max(std::abs(x1 - (x2 + width2)), std::abs(x2 - (x1 + width1)));
+	int h = height1 + height2 + std::max(std::abs(y1 - (y2 + height2)), std::abs(y2 - (y1 + height1)));
+	return { w, h };
+}
+
 void BattleCity::GameLogic::GameLogic::checkTankTileCollision()
 {
 	auto& playerTanks = m_playerTanks;
@@ -292,13 +299,6 @@ bool BattleCity::GameLogic::GameLogic::isCollision(int x1, int y1, int width1, i
 	}
 
 	return false;
-}
-
-CollSize getCollisionSize(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2)
-{
-	int w = width1 + width2 + std::max(std::abs(x1 - (x2 + width2)), std::abs(x2 - (x1 + width1)));
-	int h = height1 + height2 + std::max(std::abs(y1 - (y2 + height2)), std::abs(y2 - (y1 + height1)));
-	return { w, h };
 }
 
 void BattleCity::GameLogic::GameLogic::checkCollision()

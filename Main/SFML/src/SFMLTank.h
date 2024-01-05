@@ -10,6 +10,8 @@
 #include "TextureManager.h"
 #include "SFMLBullet.h"
 
+#include <functional>
+
 namespace BattleCity::SFML
 {
     class SFMLTank : public sf::Drawable, public sf::Transformable
