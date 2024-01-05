@@ -19,10 +19,11 @@ public:
 
 	Bullet(Position position, GameConfig::MoveDirection direction, BulletType bulletType);
 
-	Position getPosition();
-	GameConfig::MoveDirection getDirection();
+	Position getPosition() const;
+	GameConfig::MoveDirection getDirection() const;
 	void setDirection(GameConfig::MoveDirection direction);
-	BulletType getBulletType();
+	BulletType getBulletType() const;
+	float getSpeed() const;
 
 	void move();
 

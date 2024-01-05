@@ -3,11 +3,13 @@
 #include <gtest/gtest.h>
 
 TEST(BulletTest, BulletMoveOnce) {
-	Bullet bullet{ Position{0, 0},  GameConfig::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet };
+	auto originalPosition = Position{ 0, 0 };
+	Bullet bullet{ originalPosition, GameConfig::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet };
 
 	bullet.move();
 
-	auto expectedPosition = Position{ 10, 0 };
+	auto bulletSpeed = bullet.getSpeed();
+	auto expectedPosition = Position{ originalPosition.x + bulletSpeed, originalPosition.y };
 
 	EXPECT_EQ(bullet.getPosition().x, expectedPosition.x);
 	EXPECT_EQ(bullet.getPosition().y, expectedPosition.y);
@@ -15,30 +17,35 @@ TEST(BulletTest, BulletMoveOnce) {
 
 
 TEST(BulletTest, BulletMoveMultiple) {
-	Bullet bullet{ Position{20, 30},  GameConfig::MoveDirection::DOWN, Bullet::BulletType::PlayerBullet };
+	auto originalPosition = Position{ 20, 30 };
+	Bullet bullet{ originalPosition, GameConfig::MoveDirection::DOWN, Bullet::BulletType::PlayerBullet };
 
 	bullet.move();
 	bullet.move();
 	bullet.move();
 
-	auto expectedPosition = Position{ 20, 60 };
+	auto bulletSpeed = bullet.getSpeed();
+	auto expectedPosition = Position{ originalPosition.x, originalPosition.y + 3 * bulletSpeed };
 
 	EXPECT_EQ(bullet.getPosition().x, expectedPosition.x);
 	EXPECT_EQ(bullet.getPosition().y, expectedPosition.y);
 }
 
 TEST(BulletTest, BulletDirection) {
-	Bullet bullet{ Position{0, 0},  GameConfig::MoveDirection::UP, Bullet::BulletType::PlayerBullet };
+	Bullet bullet{ Position{0, 0}, GameConfig::MoveDirection::UP, Bullet::BulletType::PlayerBullet };
 
 	EXPECT_EQ(bullet.getDirection(), GameConfig::MoveDirection::UP);
 }
 
 TEST(BulletTest, BulletChangeDirectionAndMove) {
-	Bullet bullet{ Position{50, 80},  GameConfig::MoveDirection::LEFT, Bullet::BulletType::PlayerBullet };
+	auto originalPosition = Position{ 50, 80 };
+	Bullet bullet{ originalPosition, GameConfig::MoveDirection::LEFT, Bullet::BulletType::PlayerBullet };
 
 	bullet.move();
 
-	auto expectedPosition = Position{ 40, 80 };
+	auto bulletSpeed = bullet.getSpeed();
+
+	auto expectedPosition = Position{ originalPosition.x - bulletSpeed, originalPosition.y };
 
 	EXPECT_EQ(bullet.getPosition().x, expectedPosition.x);
 	EXPECT_EQ(bullet.getPosition().y, expectedPosition.y);
@@ -47,7 +54,7 @@ TEST(BulletTest, BulletChangeDirectionAndMove) {
 
 	bullet.move();
 
-	expectedPosition = Position{ 40, 90 };
+	expectedPosition = Position{ originalPosition.x - bulletSpeed, originalPosition.y + bulletSpeed };
 
 	EXPECT_EQ(bullet.getPosition().x, expectedPosition.x);
 	EXPECT_EQ(bullet.getPosition().y, expectedPosition.y);
