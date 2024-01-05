@@ -8,20 +8,34 @@
 
 #include "Tank.h"
 #include "TextureManager.h"
+#include "SFMLBullet.h"
 
 namespace BattleCity::SFML
 {
     class SFMLTank : public sf::Drawable, public sf::Transformable
     {
     public:
+        using OnBulletShotCallback = std::function<void(const SFMLTank&, SFMLBullet&& bullet)>;
+
+        OnBulletShotCallback onBulletShot;
+
+        void setOnBulletShot(OnBulletShotCallback&& callback);
+
+        void shootBullet();
+
         explicit SFMLTank(TextureManager& textureManager);
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
         // this function moves the tank relative to its current position
         void moveTank(float x, float y);
+
+        GameConfig::MoveDirection getMoveDirection();
+        void setMoveDirection(GameConfig::MoveDirection direction);
     private:
         void initTankTexture();
+
+        TextureManager& m_textureManager;
 
         GameLogic::Tank m_tankModel;
 

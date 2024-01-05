@@ -10,14 +10,13 @@ class SFMLBullet : public sf::Drawable
 {
 public:
 
-	SFMLBullet(float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType);
+	SFMLBullet(BattleCity::TextureManager&, float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType);
 
 	void move();
 
-	Position getPosition();
+	Position getPosition() const;
 	GameConfig::MoveDirection getDirection();
 	Bullet::BulletType getBulletType();
-
 private:
 
 	void setTexture();
@@ -27,6 +26,6 @@ private:
 
 	Bullet m_bullet;
 	sf::Sprite m_sprite;
-	sf::Texture m_texture;
-	BattleCity::TextureManager m_textureManager;
+	sf::Texture& m_texture;
+	BattleCity::TextureManager& m_textureManager;
 };
