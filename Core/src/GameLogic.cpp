@@ -18,7 +18,8 @@ void BattleCity::GameLogic::GameLogic::checkEnemyTankPlayerBulletCollision()
 
 			if (isCollision(xTank, xBullet, widthTank, widthBullet, yTank, yBullet, heightTank, heightBullet))
 			{
-				
+				m_enemyTanks.erase(m_enemyTanks.begin() + i);
+				m_playerBullets.erase(m_playerBullets.begin() + j);
 			}
 		}
 	}
