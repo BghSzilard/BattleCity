@@ -5,8 +5,8 @@
 #include "MoveRightwardStrategy.h"
 
 Bullet::Bullet(Position position, GameConfig::MoveDirection direction, BulletType bulletType)
+: m_position(position)
 {
-	m_position = position;
 	m_direction = direction;
 	m_bulletType = bulletType;
 
@@ -47,7 +47,7 @@ Position Bullet::getPosition() const
 	return m_position;
 }
 
-GameConfig::MoveDirection Bullet::getDirection()
+GameConfig::MoveDirection Bullet::getDirection() const
 {
 	return m_direction;
 }

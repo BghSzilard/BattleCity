@@ -39,7 +39,6 @@ private:
 	IMoveStrategy* m_moveStrategy;
 	int m_height, m_width;
 
-	std::unique_ptr<IMoveStrategy> m_moveStrategy;
 	Position m_position;
 	GameConfig::MoveDirection m_direction;
 	BulletType m_bulletType;
