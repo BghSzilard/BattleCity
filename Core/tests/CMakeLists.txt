@@ -1,4 +1,6 @@
-add_executable(CoreTest hello_test.cpp)
+file(GLOB SRC ./*.cpp)
+
+add_executable(CoreTest ${SRC})
 target_link_libraries(CoreTest GTest::gtest_main)
 target_link_libraries(CoreTest Core)
 

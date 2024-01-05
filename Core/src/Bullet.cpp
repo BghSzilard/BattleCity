@@ -51,3 +51,9 @@ GameConfig::MoveDirection Bullet::getDirection()
 {
 	return m_direction;
 }
+
+void Bullet::setDirection(GameConfig::MoveDirection direction)
+{
+	m_direction = direction;
+	determineMoveStrategy();
+}

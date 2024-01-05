@@ -21,6 +21,7 @@ public:
 
 	Position getPosition();
 	GameConfig::MoveDirection getDirection();
+	void setDirection(GameConfig::MoveDirection direction);
 	BulletType getBulletType();
 
 	void move();
