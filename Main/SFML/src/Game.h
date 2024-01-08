@@ -3,8 +3,9 @@
 #include "Timer.h"
 #include "TileMap.h"
 #include "SFMLTank.h"
+#include "GameLogic.h"
 
-namespace BattleCity
+namespace BattleCity::SFML
 {
 	class Game
 	{
@@ -22,6 +23,8 @@ namespace BattleCity
 		GameState m_state; // current manu status of the game (menu, single, multi etc)
 
         TextureManager& m_textureManager;
+
+        BattleCity::GameLogic::GameLogic m_gameModel;
 
         std::vector<SFML::SFMLTank> tanks;
         std::vector<std::unique_ptr<SFMLBullet>> bullets;

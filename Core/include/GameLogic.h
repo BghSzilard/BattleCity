@@ -1,6 +1,8 @@
 #include "Tank.h"
 #include "Bullet.h"
 #include "Map.h"
+#include "Level.h"
+#include "LevelFactory.h"
 
 #include <vector>
 
@@ -9,9 +11,11 @@ namespace BattleCity::GameLogic
 	class GameLogic
 	{
 	public:
+        explicit GameLogic(std::unique_ptr<ILevelFactory> levelFactory);
 
 		void checkCollision();
 
+        Level& getLevel();
 	private:
 
 		void checkEnemyTankPlayerBulletCollision();
@@ -27,7 +31,9 @@ namespace BattleCity::GameLogic
 		std::vector<Tank> m_playerTanks;
 		std::vector<Bullet> m_playerBullets;
 		std::vector<Bullet> m_enemyBullets;
-		
-		Map m_map;
+
+        //todo: shared ptr
+        Level m_level;
+        std::unique_ptr<ILevelFactory> m_levelFactory;
 	};
 }

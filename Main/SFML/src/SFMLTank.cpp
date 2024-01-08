@@ -5,44 +5,47 @@
 #include "SFMLTank.h"
 #include <iostream>
 
-BattleCity::SFML::SFMLTank::SFMLTank(TextureManager& textureManager, std::shared_ptr<GameLogic::Tank>& tank)
-        : m_tankModel{ tank },
-        m_textureManager(textureManager)
-        , m_tankTexture(textureManager.getTankTexture())
+namespace BattleCity::SFML
 {
-    m_tankSprite.setTexture(m_tankTexture);
-    //texture is 512x512, and we want the tank to be the same size as the tiles (64x64) => scale by a factor of 1/8=0.125
-    m_tankSprite.setScale(0.125f, 0.125f);
+	SFMLTank::SFMLTank(TextureManager& textureManager, std::shared_ptr<GameLogic::Tank>& tank)
+		: m_tankModel(tank),
+		m_textureManager(textureManager),
+		m_tankTexture(textureManager.getTankTexture()) {
 
-    m_tankSprite.setOrigin(sf::Vector2f(m_tankSprite.getLocalBounds().width, m_tankSprite.getLocalBounds().height)/2.f);
-}
+		m_tankSprite.setTexture(m_tankTexture);
+		//texture is 512x512, and we want the tank to be the same size as the tiles (64x64) => scale by a factor of 1/8=0.125
+		m_tankSprite.setScale(0.125f, 0.125f);
 
-void BattleCity::SFML::SFMLTank::draw(sf::RenderTarget &target, sf::RenderStates states) const
-{
-    // apply the entity's transform -- combine it with the one that was passed by the caller
-    //states.transform.scale(0.125f, 0.125f);
-    //states.transform.rotate((float)static_cast<int>(m_tankModel->getTankDirection()));
-    m_tankSprite.setRotation((float)static_cast<int>(m_tankModel->getTankDirection()));
-    states.transform.translate(m_tankModel->getXPosition(), m_tankModel->getYPosition());
+		m_tankSprite.setOrigin(sf::Vector2f(m_tankSprite.getLocalBounds().width, m_tankSprite.getLocalBounds().height) / 2.f);
+	}
 
-    // apply the texture
-    //states.texture = &m_tankTexture;
+	void BattleCity::SFML::SFMLTank::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		// apply the entity's transform -- combine it with the one that was passed by the caller
+		//states.transform.scale(0.125f, 0.125f);
+		//states.transform.rotate((float)static_cast<int>(m_tankModel->getTankDirection()));
+		m_tankSprite.setRotation((float)static_cast<int>(m_tankModel->getTankDirection()));
+		states.transform.translate(m_tankModel->getXPosition(), m_tankModel->getYPosition());
 
-    std::cout << static_cast<int>(m_tankModel->getTankDirection()) << ' '
-        << m_tankModel->getXPosition() << ' '
-        << m_tankModel->getYPosition() << ' ' << std::endl;
-    // you may also override states.shader or states.blendMode if you want
+		// apply the texture
+		//states.texture = &m_tankTexture;
 
-    // draw the vertex array
-    target.draw(m_tankSprite, states);
-}
+		std::cout << static_cast<int>(m_tankModel->getTankDirection()) << ' '
+			<< m_tankModel->getXPosition() << ' '
+			<< m_tankModel->getYPosition() << ' ' << std::endl;
+		// you may also override states.shader or states.blendMode if you want
 
-std::shared_ptr<BattleCity::GameLogic::Tank> BattleCity::SFML::SFMLTank::tank()
-{
-    return m_tankModel;
-}
+			// draw the vertex array
+		target.draw(m_tankSprite, states);
+	}
 
-void BattleCity::SFML::SFMLTank::initTankTexture()
-{
+	std::shared_ptr<BattleCity::GameLogic::Tank> BattleCity::SFML::SFMLTank::tank()
+	{
+		return m_tankModel;
+	}
 
+	void BattleCity::SFML::SFMLTank::initTankTexture()
+	{
+
+	}
 }

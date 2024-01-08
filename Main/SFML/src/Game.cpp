@@ -6,30 +6,31 @@
 
 #include <algorithm>
 
-namespace BattleCity
+namespace BattleCity::SFML
 {
-	Game::Game(TextureManager& textureManager)
-		: m_textureManager(textureManager), m_tileMap(m_textureManager),
-		m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y))
-	{
-		//		std::srand(unsigned(std::time(nullptr)));
-				// hardcoded screen size so that map nicely fills the screen (can be modified later)
-		m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
-		m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
+    Game::Game(TextureManager &textureManager)
+            : m_textureManager(textureManager), m_gameModel(std::make_unique<GameLogic::LevelFactory>()),
+              m_tileMap(m_textureManager, std::move(m_gameModel.getLevel())),
+              m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y, GameLogic::Tank::MoveDirection::UP))
+    {
+//		std::srand(unsigned(std::time(nullptr)));
+        // hardcoded screen size so that map nicely fills the screen (can be modified later)
+        m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
+        m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
 
 		m_state = GameState::SFMLMenu;
 
 		m_playerTank.tank()->setOnBulletShot(
-			[this](const GameLogic::Tank&, std::shared_ptr<Bullet> bullet)
+			[this](const GameLogic::Tank&, std::shared_ptr<GameLogic::Bullet> bullet)
 			{
 				m_playerBullet = std::make_unique<SFMLBullet>(m_textureManager, bullet);
 			}
 		);
 
-		m_enemyTanks.emplace_back(SFML::SFMLTank(textureManager, std::make_shared<GameLogic::Tank>(150.f, 150.f)));
+		m_enemyTanks.emplace_back(SFML::SFMLTank(textureManager, std::make_shared<GameLogic::Tank>(150.f, 150.f, GameLogic::Tank::MoveDirection::UP)));
 
 		m_enemyTanks[0].tank()->setOnBulletShot(
-			[this](const GameLogic::Tank&, std::shared_ptr<Bullet> bullet)
+			[this](const GameLogic::Tank&, std::shared_ptr<GameLogic::Bullet> bullet)
 			{
 				bullets.emplace_back(std::make_unique<SFMLBullet>(m_textureManager, bullet));
 			}
@@ -96,23 +97,23 @@ namespace BattleCity
 		m_state = GameState::EXIT;
 	}
 
-	BattleCity::Game::GameState Game::determineGameState(int option)
-	{
-		switch (option)
-		{
-		case 0:
-			return BattleCity::Game::GameState::SinglePlayerGame;
-			break;
-		case 1:
-			return BattleCity::Game::GameState::TwoPlayerGame;
-			break;
-		case 2:
-			return BattleCity::Game::GameState::EXIT;
-			break;
-		default:
-			return BattleCity::Game::GameState::EXIT;
-		}
-	}
+    Game::GameState Game::determineGameState(int option)
+    {
+        switch (option)
+        {
+            case 0:
+                return Game::GameState::SinglePlayerGame;
+                break;
+            case 1:
+                return Game::GameState::TwoPlayerGame;
+                break;
+            case 2:
+                return Game::GameState::EXIT;
+                break;
+            default:
+                return Game::GameState::EXIT;
+        }
+    }
 
 
 	void Game::singlePlayer()
@@ -131,22 +132,22 @@ namespace BattleCity
 		// TODO: Check bounds of screen
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			m_playerTank.tank()->setTankDirection(GameConfig::MoveDirection::LEFT);
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::LEFT);
 			m_playerTank.tank()->moveTank(-1.0f * GameConfig::TANK_SPEED, 0);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			m_playerTank.tank()->setTankDirection(GameConfig::MoveDirection::RIGHT);
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::RIGHT);
 			m_playerTank.tank()->moveTank(1.0f * GameConfig::TANK_SPEED, 0);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			m_playerTank.tank()->setTankDirection(GameConfig::MoveDirection::UP);
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::UP);
 			m_playerTank.tank()->moveTank(0, -1.f * GameConfig::TANK_SPEED);
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			m_playerTank.tank()->setTankDirection(GameConfig::MoveDirection::DOWN);
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::DOWN);
 			m_playerTank.tank()->moveTank(0, 1.f * GameConfig::TANK_SPEED);
 		}
 		if (!m_playerBullet && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

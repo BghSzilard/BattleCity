@@ -8,6 +8,7 @@
 
 #include "Map.h"
 #include "TextureManager.h"
+#include "Level.h"
 
 namespace BattleCity::SFML
 {
@@ -16,7 +17,7 @@ namespace BattleCity::SFML
     private:
         const uint32_t kTileSize = 64;
     public:
-        explicit TileMap(TextureManager& manager);
+        TileMap(TextureManager& manager, GameLogic::Level level);
 
         void initMap();
 

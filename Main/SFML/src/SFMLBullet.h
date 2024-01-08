@@ -8,23 +8,27 @@
 
 #include <memory>
 
-class SFMLBullet : public sf::Drawable
+namespace BattleCity::SFML
 {
-public:
+	class SFMLBullet : public sf::Drawable
+	{
+	public:
 
-	SFMLBullet(BattleCity::TextureManager&, std::shared_ptr<Bullet>& bullet);
+		SFMLBullet(TextureManager&, std::shared_ptr<GameLogic::Bullet>& bullet);
 
-	std::shared_ptr<Bullet> bullet();
-private:
+		std::shared_ptr<GameLogic::Bullet> bullet();
+	private:
 
-	void setTexture();
-	void setSprite();
+		void setTexture();
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		void setSprite();
 
-	std::shared_ptr<Bullet> m_bullet;
-	
-	sf::Sprite m_sprite;
-	sf::Texture& m_texture;
-	BattleCity::TextureManager& m_textureManager;
-};
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+		std::shared_ptr<GameLogic::Bullet> m_bullet;
+
+		sf::Sprite m_sprite;
+		sf::Texture& m_texture;
+		BattleCity::TextureManager& m_textureManager;
+	};
+}
