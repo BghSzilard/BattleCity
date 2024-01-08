@@ -1,70 +1,74 @@
 #include "SFMLBullet.h"
 
-SFMLBullet::SFMLBullet(BattleCity::TextureManager& textureManager, float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType)
-	: m_bullet(Position(startX, startY), direction, bulletType),
-    m_textureManager(textureManager),
-    m_texture(textureManager.getBulletTexture())
+namespace BattleCity::SFML
 {
-	m_sprite.setPosition(startX, startY);
-//	setTexture();
-	setSprite();
-}
+    SFMLBullet::SFMLBullet(BattleCity::TextureManager &textureManager, float startX, float startY,
+                           GameLogic::Bullet::MoveDirection direction, GameLogic::Bullet::BulletType bulletType)
+            : m_bullet(Position(startX, startY), direction, bulletType),
+              m_textureManager(textureManager),
+              m_texture(textureManager.getBulletTexture())
+    {
+        m_sprite.setPosition(startX, startY);
+        //	setTexture();
+        setSprite();
+    }
 
-void SFMLBullet::move()
-{
-	m_bullet.move();
-	auto position = m_bullet.getPosition();
-	m_sprite.setPosition(position.x, position.y);
-}
+    void SFMLBullet::move()
+    {
+        m_bullet.move();
+        auto position = m_bullet.getPosition();
+        m_sprite.setPosition(position.x, position.y);
+    }
 
-Position SFMLBullet::getPosition() const
-{
-	return m_bullet.getPosition();
-}
+    Position SFMLBullet::getPosition() const
+    {
+        return m_bullet.getPosition();
+    }
 
-GameConfig::MoveDirection SFMLBullet::getDirection()
-{
-	return m_bullet.getDirection();
-}
+    GameLogic::Bullet::MoveDirection SFMLBullet::getDirection()
+    {
+        return m_bullet.getDirection();
+    }
 
-Bullet::BulletType SFMLBullet::getBulletType()
-{
-	return m_bullet.getBulletType();
-}
+    GameLogic::Bullet::BulletType SFMLBullet::getBulletType()
+    {
+        return m_bullet.getBulletType();
+    }
 
-void SFMLBullet::setTexture()
-{
-	m_texture = m_textureManager.getBulletTexture();
-}
+    void SFMLBullet::setTexture()
+    {
+        m_texture = m_textureManager.getBulletTexture();
+    }
 
-void SFMLBullet::setSprite()
-{
-	m_sprite.setTexture(m_texture);
+    void SFMLBullet::setSprite()
+    {
+        m_sprite.setTexture(m_texture);
 
-	auto direction = m_bullet.getDirection();
+        auto direction = m_bullet.getDirection();
 
-	switch (direction)
-	{
-	case GameConfig::MoveDirection::LEFT:
-		m_sprite.setTextureRect(sf::IntRect(0, 0, 40, 40));
-		break;
-	case GameConfig::MoveDirection::RIGHT:
-		m_sprite.setTextureRect(sf::IntRect(40, 0, 40, 40));
-		break;
-	case GameConfig::MoveDirection::UP:
-		m_sprite.setTextureRect(sf::IntRect(80, 0, 40, 40));
-		break;
-	case GameConfig::MoveDirection::DOWN:
-		m_sprite.setTextureRect(sf::IntRect(120, 0, 40, 40));
-		break;
-	}
+        switch (direction)
+        {
+            case GameLogic::Bullet::MoveDirection::LEFT:
+                m_sprite.setTextureRect(sf::IntRect(0, 0, 40, 40));
+                break;
+            case GameLogic::Bullet::MoveDirection::RIGHT:
+                m_sprite.setTextureRect(sf::IntRect(40, 0, 40, 40));
+                break;
+            case GameLogic::Bullet::MoveDirection::UP:
+                m_sprite.setTextureRect(sf::IntRect(80, 0, 40, 40));
+                break;
+            case GameLogic::Bullet::MoveDirection::DOWN:
+                m_sprite.setTextureRect(sf::IntRect(120, 0, 40, 40));
+                break;
+        }
 
-}
+    }
 
-void SFMLBullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    // apply the texture
-    states.texture = &m_texture;
+    void SFMLBullet::draw(sf::RenderTarget &target, sf::RenderStates states) const
+    {
+        // apply the texture
+        states.texture = &m_texture;
 
-	target.draw(m_sprite, states);
+        target.draw(m_sprite, states);
+    }
 }

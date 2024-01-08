@@ -13,7 +13,7 @@ namespace GameConfig
     inline const std::string TILES_TEXTURE_PATH = "sfml_assets/textures/tileset.png";
     inline const std::string BULLET_TEXTURE_PATH = "sfml_assets/textures/bullet.png";
     inline const std::string EAGLE_TEXTURE_PATH = "sfml_assets/textures/eagle.png";
-    inline const std::string MAP_FILE_PATH = "core_assets/maps/map.txt";
+    inline const std::string LEVEL_DIR_PATH = "core_assets/levels/";
     inline const std::string TANK_TEXTURE_PATH = "sfml_assets/textures/tank.png";
     inline const std::array<std::string, 3> OPTIONS = { "1 player", "2 players", "Exit" };
 
@@ -23,11 +23,4 @@ namespace GameConfig
 
     constexpr int TANK_SPEED = 3;
     constexpr float BULLET_SPEED = 10;
-
-    enum class MoveDirection {
-        UP = 0,
-        DOWN = 180,
-        LEFT = 270,
-        RIGHT = 90
-    };
 }

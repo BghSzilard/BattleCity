@@ -7,8 +7,6 @@
 #include "DEFINITIONS.h"
 #include "GameConfig.h"
 
-#include "FileHandler.h"
-
 namespace BattleCity::GameLogic
 {
     class Map

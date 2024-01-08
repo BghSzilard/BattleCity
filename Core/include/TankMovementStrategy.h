@@ -1,17 +1,24 @@
 #pragma once
 
+
+
 #include "ITankMovementStrategy.h"
 #include "GameConfig.h"
+#include "Entity.h"
 
-class TankMovementStrategy : public ITankMovementStrategy
+
+namespace BattleCity::GameLogic
 {
-public:
-    TankMovementStrategy();
+  class TankMovementStrategy : public ITankMovementStrategy
+  {
+  public:
+      TankMovementStrategy();
 
-    Position move() override;
-    GameConfig::MoveDirection getMoveDirection();
+      Position move() override;
+      Entity::MoveDirection getMoveDirection();
 
-private:
-    Position m_prevPos;
-    GameConfig::MoveDirection m_direction;
-};
+  private:
+      Position m_prevPos;
+      Entity::MoveDirection m_direction;
+  };
+}
