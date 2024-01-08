@@ -24,7 +24,7 @@ namespace BattleCity
         TextureManager& m_textureManager;
 
         std::vector<SFML::SFMLTank> tanks;
-        std::vector<SFMLBullet> bullets;
+        std::vector<std::unique_ptr<SFMLBullet>> bullets;
 
 //		Sprite m_spr;
 		SFML::TileMap m_tileMap;
@@ -40,6 +40,6 @@ namespace BattleCity
 
 		void singlePlayer();
 
-        bool bulletAlive(const SFMLBullet& bullet);
+        bool bulletAlive(SFMLBullet& bullet);
     };
 }

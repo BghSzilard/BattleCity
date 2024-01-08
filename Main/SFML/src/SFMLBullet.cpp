@@ -1,35 +1,17 @@
 #include "SFMLBullet.h"
 
-SFMLBullet::SFMLBullet(BattleCity::TextureManager& textureManager, float startX, float startY, GameConfig::MoveDirection direction, Bullet::BulletType bulletType)
-	: m_bullet(Position(startX, startY), direction, bulletType),
+SFMLBullet::SFMLBullet(BattleCity::TextureManager& textureManager, std::shared_ptr<Bullet>& bullet)
+	: m_bullet{ bullet },
     m_textureManager(textureManager),
     m_texture(textureManager.getBulletTexture())
 {
-	m_sprite.setPosition(startX, startY);
-//	setTexture();
 	setSprite();
 }
 
-void SFMLBullet::move()
-{
-	m_bullet.move();
-	auto position = m_bullet.getPosition();
-	m_sprite.setPosition(position.x, position.y);
-}
 
-Position SFMLBullet::getPosition() const
+std::shared_ptr<Bullet> SFMLBullet::bullet()
 {
-	return m_bullet.getPosition();
-}
-
-GameConfig::MoveDirection SFMLBullet::getDirection()
-{
-	return m_bullet.getDirection();
-}
-
-Bullet::BulletType SFMLBullet::getBulletType()
-{
-	return m_bullet.getBulletType();
+	return m_bullet;
 }
 
 void SFMLBullet::setTexture()
@@ -41,7 +23,7 @@ void SFMLBullet::setSprite()
 {
 	m_sprite.setTexture(m_texture);
 
-	auto direction = m_bullet.getDirection();
+	auto direction = m_bullet->getDirection();
 
 	switch (direction)
 	{
@@ -65,6 +47,9 @@ void SFMLBullet::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the texture
     states.texture = &m_texture;
+	
+	auto position = m_bullet->getPosition();
+	states.transform.translate(position.x, position.y);
 
 	target.draw(m_sprite, states);
 }
