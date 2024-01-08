@@ -2,9 +2,11 @@
 
 #include <gtest/gtest.h>
 
+using namespace BattleCity::GameLogic;
+
 TEST(BulletTest, BulletMoveOnce) {
 	auto originalPosition = Position{ 0, 0 };
-	Bullet bullet{ originalPosition, GameConfig::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet };
+	Bullet bullet{ originalPosition, Entity::MoveDirection::RIGHT, Bullet::BulletType::PlayerBullet };
 
 	bullet.move();
 
@@ -18,7 +20,7 @@ TEST(BulletTest, BulletMoveOnce) {
 
 TEST(BulletTest, BulletMoveMultiple) {
 	auto originalPosition = Position{ 20, 30 };
-	Bullet bullet{ originalPosition, GameConfig::MoveDirection::DOWN, Bullet::BulletType::PlayerBullet };
+	Bullet bullet{ originalPosition, Entity::MoveDirection::DOWN, Bullet::BulletType::PlayerBullet };
 
 	bullet.move();
 	bullet.move();
@@ -32,14 +34,14 @@ TEST(BulletTest, BulletMoveMultiple) {
 }
 
 TEST(BulletTest, BulletDirection) {
-	Bullet bullet{ Position{0, 0}, GameConfig::MoveDirection::UP, Bullet::BulletType::PlayerBullet };
+	Bullet bullet{ Position{0, 0}, Entity::MoveDirection::UP, Bullet::BulletType::PlayerBullet };
 
-	EXPECT_EQ(bullet.getDirection(), GameConfig::MoveDirection::UP);
+	EXPECT_EQ(bullet.getDirection(), Entity::MoveDirection::UP);
 }
 
 TEST(BulletTest, BulletChangeDirectionAndMove) {
 	auto originalPosition = Position{ 50, 80 };
-	Bullet bullet{ originalPosition, GameConfig::MoveDirection::LEFT, Bullet::BulletType::PlayerBullet };
+	Bullet bullet{ originalPosition, Entity::MoveDirection::LEFT, Bullet::BulletType::PlayerBullet };
 
 	bullet.move();
 
@@ -50,7 +52,7 @@ TEST(BulletTest, BulletChangeDirectionAndMove) {
 	EXPECT_EQ(bullet.getPosition().x, expectedPosition.x);
 	EXPECT_EQ(bullet.getPosition().y, expectedPosition.y);
 
-	bullet.setDirection(GameConfig::MoveDirection::DOWN);
+	bullet.setDirection(Entity::MoveDirection::DOWN);
 
 	bullet.move();
 
