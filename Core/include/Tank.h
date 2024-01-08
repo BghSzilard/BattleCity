@@ -15,7 +15,7 @@ namespace BattleCity::GameLogic
     class Tank : public Entity
     {
     public:
-        Tank(float x, float y);
+        Tank(float x, float y, MoveDirection direction);
 
         void setPosition(float x, float y);
 
@@ -33,14 +33,14 @@ namespace BattleCity::GameLogic
         float m_xPos, m_yPos;
         int m_width, m_height;
         int m_tankSpeed;
-        GameConfig::MoveDirection m_tankDirection;
+        MoveDirection m_tankDirection;
 
         ITankMovementStrategy* m_tankMovementStrategy;
 
 
     public:
-        [[nodiscard]] GameConfig::MoveDirection getTankDirection() const;
+        [[nodiscard]] MoveDirection getTankDirection() const;
 
-        void setTankDirection(GameConfig::MoveDirection mTankDirection);
+        void setTankDirection(MoveDirection mTankDirection);
     };
 }

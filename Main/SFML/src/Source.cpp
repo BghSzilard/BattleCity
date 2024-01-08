@@ -6,6 +6,6 @@
 int main()
 {
     BattleCity::TextureManager TextureManager;
-	BattleCity::Game MyGame(TextureManager);
+	BattleCity::SFML::Game MyGame(TextureManager);
 	MyGame.runGame();
 }
