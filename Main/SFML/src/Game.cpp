@@ -6,10 +6,11 @@
 
 #include <algorithm>
 
-namespace BattleCity
+namespace BattleCity::SFML
 {
     Game::Game(TextureManager &textureManager)
-            : m_textureManager(textureManager), m_tileMap(m_textureManager),
+            : m_textureManager(textureManager), m_gameModel(std::make_unique<GameLogic::LevelFactory>()),
+              m_tileMap(m_textureManager, std::move(m_gameModel.getLevel())),
               m_playerTank(m_textureManager, {GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y})
     {
 //		std::srand(unsigned(std::time(nullptr)));
@@ -89,21 +90,21 @@ namespace BattleCity
         m_state = GameState::EXIT;
     }
 
-    BattleCity::Game::GameState Game::determineGameState(int option)
+    Game::GameState Game::determineGameState(int option)
     {
         switch (option)
         {
             case 0:
-                return BattleCity::Game::GameState::SinglePlayerGame;
+                return Game::GameState::SinglePlayerGame;
                 break;
             case 1:
-                return BattleCity::Game::GameState::TwoPlayerGame;
+                return Game::GameState::TwoPlayerGame;
                 break;
             case 2:
-                return BattleCity::Game::GameState::EXIT;
+                return Game::GameState::EXIT;
                 break;
             default:
-                return BattleCity::Game::GameState::EXIT;
+                return Game::GameState::EXIT;
         }
     }
 
@@ -124,19 +125,19 @@ namespace BattleCity
         // TODO: Check bounds of screen
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            m_playerTank.setMoveDirection(GameConfig::MoveDirection::LEFT);
+            m_playerTank.setMoveDirection(GameLogic::Tank::MoveDirection::LEFT);
             m_playerTank.moveTank(-1.0f * GameConfig::TANK_SPEED, 0);
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            m_playerTank.setMoveDirection(GameConfig::MoveDirection::RIGHT);
+            m_playerTank.setMoveDirection(GameLogic::Tank::MoveDirection::RIGHT);
             m_playerTank.moveTank(1.0f * GameConfig::TANK_SPEED, 0);
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            m_playerTank.setMoveDirection(GameConfig::MoveDirection::UP);
+            m_playerTank.setMoveDirection(GameLogic::Tank::MoveDirection::UP);
             m_playerTank.moveTank(0, -1.f * GameConfig::TANK_SPEED);
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            m_playerTank.setMoveDirection(GameConfig::MoveDirection::DOWN);
+            m_playerTank.setMoveDirection(GameLogic::Tank::MoveDirection::DOWN);
             m_playerTank.moveTank(0, 1.f * GameConfig::TANK_SPEED);
         }
         if (!m_playerBullet && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))

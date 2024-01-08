@@ -32,8 +32,8 @@ namespace BattleCity::SFML
         // this function moves the tank relative to its current position
         void moveTank(float x, float y);
 
-        GameConfig::MoveDirection getMoveDirection();
-        void setMoveDirection(GameConfig::MoveDirection direction);
+        GameLogic::Tank::MoveDirection getMoveDirection();
+        void setMoveDirection(GameLogic::Tank::MoveDirection direction);
     private:
         void initTankTexture();
 

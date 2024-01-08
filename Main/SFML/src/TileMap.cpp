@@ -13,9 +13,9 @@
 
 namespace BattleCity::SFML
 {
-    TileMap::TileMap(TextureManager& manager)
+    TileMap::TileMap(TextureManager& manager, GameLogic::Level level)
             : m_textureManager(manager)
-            , m_mapModel{ GameLogic::Map(std::move(FileHandler().getMapData())) }
+            , m_mapModel{ GameLogic::Map(std::move(level.getMap())) }
             , m_tileset(manager.getTilesTexture())
     {
         m_vertices.setPrimitiveType(sf::Triangles);
