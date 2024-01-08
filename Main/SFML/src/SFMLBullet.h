@@ -6,44 +6,29 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <memory>
+
 namespace BattleCity::SFML
 {
-    class SFMLBullet : public sf::Drawable
-    {
-    public:
+	class SFMLBullet : public sf::Drawable
+	{
+	public:
 
-        SFMLBullet(BattleCity::TextureManager &, float startX, float startY, GameLogic::Bullet::MoveDirection direction,
-                   GameLogic::Bullet::BulletType bulletType);
+		SFMLBullet(TextureManager&, std::shared_ptr<GameLogic::Bullet>& bullet);
 
-        void move();
+		std::shared_ptr<GameLogic::Bullet> bullet();
+	private:
 
-        Position getPosition() const;
+		void setTexture();
 
-        GameLogic::Bullet::MoveDirection getDirection();
+		void setSprite();
 
-        GameLogic::Bullet::BulletType getBulletType();
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-        SFMLBullet &operator=(const SFMLBullet &other)
-        {
-            m_bullet = other.m_bullet;
-            m_sprite = other.m_sprite;
-            m_texture = other.m_texture;
-            m_textureManager = other.m_textureManager;
+		std::shared_ptr<GameLogic::Bullet> m_bullet;
 
-            return *this;
-        }
-
-    private:
-
-        void setTexture();
-
-        void setSprite();
-
-        virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
-
-        GameLogic::Bullet m_bullet;
-        sf::Sprite m_sprite;
-        sf::Texture &m_texture;
-        BattleCity::TextureManager &m_textureManager;
-    };
+		sf::Sprite m_sprite;
+		sf::Texture& m_texture;
+		BattleCity::TextureManager& m_textureManager;
+	};
 }

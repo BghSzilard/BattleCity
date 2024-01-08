@@ -27,7 +27,7 @@ namespace BattleCity::SFML
         BattleCity::GameLogic::GameLogic m_gameModel;
 
         std::vector<SFML::SFMLTank> tanks;
-        std::vector<SFMLBullet> bullets;
+        std::vector<std::unique_ptr<SFMLBullet>> bullets;
 
 //		Sprite m_spr;
 		SFML::TileMap m_tileMap;
@@ -43,6 +43,6 @@ namespace BattleCity::SFML
 
 		void singlePlayer();
 
-        bool bulletAlive(const SFMLBullet& bullet);
+        bool bulletAlive(SFMLBullet& bullet);
     };
 }

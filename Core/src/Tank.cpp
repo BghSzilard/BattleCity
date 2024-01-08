@@ -62,3 +62,20 @@ namespace BattleCity::GameLogic
   }
 }
 
+void BattleCity::GameLogic::Tank::setOnBulletShot(BattleCity::GameLogic::Tank::OnBulletShotCallback && callback)
+{
+    onBulletShot = std::move(callback);
+}
+
+void BattleCity::GameLogic::Tank::shootBullet()
+{
+    auto bullet = std::make_shared<Bullet>(Position{m_xPos, m_yPos}, getTankDirection(), Bullet::BulletType::PlayerBullet);
+    if (onBulletShot) {
+        onBulletShot(*this, bullet);
+    }
+}
+
+void BattleCity::GameLogic::Tank::moveTank(float x, float y)
+{
+    setPosition(getXPosition() + x, getYPosition() + y);
+}
