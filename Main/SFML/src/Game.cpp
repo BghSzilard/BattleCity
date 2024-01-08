@@ -63,12 +63,9 @@ namespace BattleCity::SFML
 				menu();
 				break;
 			case GameState::SinglePlayerGame:
-				playerTanks.push_back(m_playerTank.tank());
 				singlePlayer();
 				break;
 			case GameState::TwoPlayerGame:
-				playerTanks.push_back(m_playerTank.tank());
-				playerTanks.push_back(m_playerTank2.tank());
 				twoPlayer();
 				break;
 			}
@@ -105,6 +102,12 @@ namespace BattleCity::SFML
 					auto& asd = m_textureManager;
 					new(this) Game(asd);
 					m_state = determineGameState(chosenOption);
+					switch (m_state) {
+					case GameState::TwoPlayerGame:
+						playerTanks.push_back(m_playerTank2.tank());
+					case GameState::SinglePlayerGame:
+						playerTanks.push_back(m_playerTank.tank());
+					}
 					return;
 				}
 			}
