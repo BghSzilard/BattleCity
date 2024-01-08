@@ -10,8 +10,10 @@ namespace BattleCity::SFML
 {
     Game::Game(TextureManager &textureManager)
             : m_textureManager(textureManager), m_gameModel(std::make_unique<GameLogic::LevelFactory>()),
-              m_tileMap(m_textureManager, std::move(m_gameModel.getLevel())),
-              m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y, GameLogic::Tank::MoveDirection::UP))
+              m_tileMap(m_textureManager,
+			  std::move(m_gameModel.getLevel())),
+              m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y, GameLogic::Tank::MoveDirection::UP)),
+              m_playerTank2(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X+64, GameConfig::INITIAL_TANK_POS_Y+64, GameLogic::Tank::MoveDirection::UP))
     {
 //		std::srand(unsigned(std::time(nullptr)));
         // hardcoded screen size so that map nicely fills the screen (can be modified later)
@@ -24,6 +26,12 @@ namespace BattleCity::SFML
 			[this](const GameLogic::Tank&, std::shared_ptr<GameLogic::Bullet> bullet)
 			{
 				m_playerBullet = std::make_unique<SFMLBullet>(m_textureManager, bullet);
+			}
+		);
+		m_playerTank2.tank()->setOnBulletShot(
+			[this](const GameLogic::Tank&, std::shared_ptr<GameLogic::Bullet> bullet)
+			{
+				m_playerBullet2 = std::make_unique<SFMLBullet>(m_textureManager, bullet);
 			}
 		);
 
@@ -48,6 +56,9 @@ namespace BattleCity::SFML
 				break;
 			case GameState::SinglePlayerGame:
 				singlePlayer();
+				break;
+			case GameState::TwoPlayerGame:
+				twoPlayer();
 				break;
 			}
 		}
@@ -187,6 +198,114 @@ namespace BattleCity::SFML
 
 		if (m_playerBullet && !bulletAlive(*m_playerBullet))
 			m_playerBullet = nullptr;
+	}
+
+	void Game::twoPlayer()
+	{
+		sf::Event event;
+		SFMLEagle eagle;
+
+		while (m_window.pollEvent(event))
+		{
+			// Press ESC or the X button in the window
+			if (event.type == sf::Event::Closed ||
+				event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+				m_state = GameState::EXIT;
+		}
+
+		// TODO: Check bounds of screen
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::LEFT);
+			m_playerTank.tank()->moveTank(-1.0f * GameConfig::TANK_SPEED, 0);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::RIGHT);
+			m_playerTank.tank()->moveTank(1.0f * GameConfig::TANK_SPEED, 0);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::UP);
+			m_playerTank.tank()->moveTank(0, -1.f * GameConfig::TANK_SPEED);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::DOWN);
+			m_playerTank.tank()->moveTank(0, 1.f * GameConfig::TANK_SPEED);
+		}
+
+		if (!m_playerBullet && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			m_playerTank.tank()->shootBullet();
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			m_playerTank2.tank()->setTankDirection(GameLogic::Tank::MoveDirection::LEFT);
+			m_playerTank2.tank()->moveTank(-1.0f * GameConfig::TANK_SPEED, 0);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			m_playerTank2.tank()->setTankDirection(GameLogic::Tank::MoveDirection::RIGHT);
+			m_playerTank2.tank()->moveTank(1.0f * GameConfig::TANK_SPEED, 0);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		{
+			m_playerTank2.tank()->setTankDirection(GameLogic::Tank::MoveDirection::UP);
+			m_playerTank2.tank()->moveTank(0, -1.f * GameConfig::TANK_SPEED);
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			m_playerTank2.tank()->setTankDirection(GameLogic::Tank::MoveDirection::DOWN);
+			m_playerTank2.tank()->moveTank(0, 1.f * GameConfig::TANK_SPEED);
+		}
+
+		if (!m_playerBullet2 && sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+		{
+			m_playerTank2.tank()->shootBullet();
+		}
+
+		m_window.clear();
+		m_window.draw(m_tileMap);
+		m_window.draw(m_playerTank);
+		m_window.draw(m_playerTank2);
+		for (auto& tank : m_enemyTanks)
+		{
+			m_window.draw(tank);
+		}
+		if (m_playerBullet)
+		{
+			m_window.draw(*m_playerBullet);
+			m_playerBullet->bullet()->move();
+		}
+		if (m_playerBullet2)
+		{
+			m_window.draw(*m_playerBullet2);
+			m_playerBullet2->bullet()->move();
+		}
+		m_window.draw(eagle);
+		for (auto& bullet : bullets)
+		{
+			if (bulletAlive(*bullet))
+			{
+				bullet->bullet()->move();
+				m_window.draw(*bullet);
+			}
+		}
+
+		bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
+			[this](std::unique_ptr<SFMLBullet>& bullet)
+			{ return !bulletAlive(*bullet); }),
+			bullets.end());
+
+
+		m_window.display();
+
+		if (m_playerBullet && !bulletAlive(*m_playerBullet))
+			m_playerBullet = nullptr;
+		if (m_playerBullet2 && !bulletAlive(*m_playerBullet2))
+			m_playerBullet2 = nullptr;
 	}
 
 	bool Game::bulletAlive(SFMLBullet& bullet)

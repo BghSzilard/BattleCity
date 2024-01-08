@@ -32,16 +32,19 @@ namespace BattleCity::SFML
 //		Sprite m_spr;
 		SFML::TileMap m_tileMap;
         SFML::SFMLTank m_playerTank;
+        SFML::SFMLTank m_playerTank2;
 
         std::vector<SFML::SFMLTank> m_enemyTanks;
 
         std::unique_ptr<SFMLBullet> m_playerBullet;
+        std::unique_ptr<SFMLBullet> m_playerBullet2;
 
 		void menu();
 
 		GameState determineGameState(int option);
 
 		void singlePlayer();
+		void twoPlayer();
 
         bool bulletAlive(SFMLBullet& bullet);
     };
