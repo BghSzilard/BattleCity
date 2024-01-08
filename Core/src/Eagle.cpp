@@ -1,12 +1,23 @@
 #include "Eagle.h"
 #include "GameConfig.h"
 
-Eagle::Eagle() : m_position{ GameConfig::SCREEN_WIDTH / 2, GameConfig::SCREEN_HEIGHT - 100}
+namespace BattleCity::GameLogic
 {
+	Eagle::Eagle() : m_position{ GameConfig::SCREEN_WIDTH / 2, GameConfig::SCREEN_HEIGHT - 100 }
+	{
 
-}
+	}
 
-Position Eagle::getPosition()
-{
-	return m_position;
+	Eagle::Eagle(Position position)
+		: m_position(position) {}
+
+	Position Eagle::getPosition()
+	{
+		return m_position;
+	}
+
+	void Eagle::setPosition(Position position)
+	{
+		m_position = position;
+	}
 }

@@ -1,14 +1,21 @@
+#pragma once
+
 #include "Position.h"
 
-class Eagle
+namespace BattleCity::GameLogic
 {
-public:
+	class Eagle
+	{
+	public:
 
-	Eagle();
+		Eagle();
+		Eagle(Position position);
 
-	Position getPosition();
+		Position getPosition();
+		void setPosition(Position position);
 
-private:
+	private:
 
-	const Position m_position;
-};
+		Position m_position;
+	};
+}

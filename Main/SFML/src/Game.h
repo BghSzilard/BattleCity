@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include "TileMap.h"
 #include "SFMLTank.h"
+#include "SFMLEagle.h"
 #include "GameLogic.h"
 
 namespace BattleCity::SFML
@@ -19,6 +20,8 @@ namespace BattleCity::SFML
 	private:
 		void checkTankTileCollision();
 		void checkBulletTileCollision();
+		void checkEnemyTankPlayerBulletCollision();
+		void checkEaglePlayerBulletCollision();
 		void checkCollision();
 
 	private:
@@ -34,15 +37,18 @@ namespace BattleCity::SFML
         std::vector<SFML::SFMLTank> tanks;
         std::vector<std::unique_ptr<SFMLBullet>> bullets;
 
+		std::vector<std::unique_ptr<SFMLEagle>> m_eagles;
+
 		// TODO remove all bullshit
         std::vector<std::shared_ptr<GameLogic::Tank>> playerTanks;
+		std::vector<GameLogic::Bullet*> playerBullets;
 
 //		Sprite m_spr;
 		SFML::TileMap m_tileMap;
         SFML::SFMLTank m_playerTank;
         SFML::SFMLTank m_playerTank2;
 
-        std::vector<SFML::SFMLTank> m_enemyTanks;
+        std::vector<std::unique_ptr<SFML::SFMLTank>> m_enemyTanks;
 
         std::unique_ptr<SFMLBullet> m_playerBullet;
         std::unique_ptr<SFMLBullet> m_playerBullet2;

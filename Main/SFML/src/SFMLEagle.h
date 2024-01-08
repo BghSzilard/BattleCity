@@ -1,25 +1,30 @@
+#pragma once
+
 #include "Eagle.h"
 #include "TextureManager.h"
 
 #include <SFML/Graphics.hpp>
 
-class SFMLEagle : public sf::Drawable
-{
-public:
+namespace BattleCity::SFML {
 
-	SFMLEagle();
+	class SFMLEagle : public sf::Drawable
+	{
+	public:
 
-	Position getPosition();
+		SFMLEagle(std::shared_ptr<GameLogic::Eagle> eagle);
 
-private:
+		std::shared_ptr<GameLogic::Eagle> eagle();
 
-	void setTexture();
-	void setSprite();
+	private:
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states)  const;
+		void setTexture();
+		void setSprite();
 
-	Eagle m_eagle;
-	sf::Sprite m_sprite;
-	sf::Texture m_texture;
-	BattleCity::TextureManager m_textureManager;
-};
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states)  const;
+
+		std::shared_ptr<GameLogic::Eagle> m_eagle;
+		sf::Sprite m_sprite;
+		sf::Texture m_texture;
+		BattleCity::TextureManager m_textureManager;
+	};
+}

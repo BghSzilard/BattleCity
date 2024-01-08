@@ -14,7 +14,8 @@ namespace BattleCity::SFML
 		m_tileMap(m_textureManager,
 			std::move(m_gameModel.getLevel())),
 		m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y, GameLogic::Tank::MoveDirection::UP)),
-		m_playerTank2(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X + 64, GameConfig::INITIAL_TANK_POS_Y + 64, GameLogic::Tank::MoveDirection::UP))
+		m_playerTank2(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X + 64, GameConfig::INITIAL_TANK_POS_Y + 64, GameLogic::Tank::MoveDirection::UP)),
+		m_eagles()
 	{
 		//		std::srand(unsigned(std::time(nullptr)));
 				// hardcoded screen size so that map nicely fills the screen (can be modified later)
@@ -36,14 +37,20 @@ namespace BattleCity::SFML
 			}
 		);
 
-		m_enemyTanks.emplace_back(SFML::SFMLTank(textureManager, std::make_shared<GameLogic::Tank>(150.f, 150.f, GameLogic::Tank::MoveDirection::UP)));
+		m_enemyTanks.emplace_back(std::make_unique<SFMLTank>(textureManager, std::make_shared<GameLogic::Tank>(150.f, 150.f, GameLogic::Tank::MoveDirection::UP)));
 
-		m_enemyTanks[0].tank()->setOnBulletShot(
+		m_enemyTanks[0]->tank()->setOnBulletShot(
 			[this](const GameLogic::Tank&, std::shared_ptr<GameLogic::Bullet> bullet)
 			{
 				bullets.emplace_back(std::make_unique<SFMLBullet>(m_textureManager, bullet));
 			}
 		);
+
+		m_eagles.emplace_back(std::make_unique<SFMLEagle>(std::make_shared<GameLogic::Eagle>(Position{64*5, 20})));
+		m_eagles.emplace_back(std::make_unique<SFMLEagle>(std::make_shared<GameLogic::Eagle>(Position{64*10, 30})));
+		m_eagles.emplace_back(std::make_unique<SFMLEagle>(std::make_shared<GameLogic::Eagle>(Position{64*7, 64*14})));
+		m_eagles.emplace_back(std::make_unique<SFMLEagle>(std::make_shared<GameLogic::Eagle>(Position{64*4, 64*12})));
+		m_eagles.emplace_back(std::make_unique<SFMLEagle>(std::make_shared<GameLogic::Eagle>(Position{64*11, 64*12})));
 	}
 
 	void Game::runGame()
@@ -94,6 +101,9 @@ namespace BattleCity::SFML
 				else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Key::Enter)
 				{
 					int chosenOption = menu.getChosenOption();
+					this->~Game();
+					auto& asd = m_textureManager;
+					new(this) Game(asd);
 					m_state = determineGameState(chosenOption);
 					return;
 				}
@@ -134,7 +144,7 @@ namespace BattleCity::SFML
 	void Game::singlePlayer()
 	{
 		sf::Event event;
-		SFMLEagle eagle;
+		
 
 		while (m_window.pollEvent(event))
 		{
@@ -177,14 +187,16 @@ namespace BattleCity::SFML
 		m_window.draw(m_playerTank);
 		for (auto& tank : m_enemyTanks)
 		{
-			m_window.draw(tank);
+			m_window.draw(*tank);
 		}
 		if (m_playerBullet)
 		{
 			m_window.draw(*m_playerBullet);
 			m_playerBullet->bullet()->move();
 		}
-		m_window.draw(eagle);
+		for (auto& eagle : m_eagles) {
+			m_window.draw(*eagle);
+		}
 		for (auto& bullet : bullets)
 		{
 			if (bulletAlive(*bullet))
@@ -204,12 +216,15 @@ namespace BattleCity::SFML
 
 		if (m_playerBullet && (!m_playerBullet->bullet()->isAlive || !bulletAlive(*m_playerBullet)))
 			m_playerBullet = nullptr;
+
+		if (m_enemyTanks.empty()) {
+			m_state = GameState::SFMLMenu;
+		}
 	}
 
 	void Game::twoPlayer()
 	{
 		sf::Event event;
-		SFMLEagle eagle;
 
 		while (m_window.pollEvent(event))
 		{
@@ -280,7 +295,7 @@ namespace BattleCity::SFML
 		m_window.draw(m_playerTank2);
 		for (auto& tank : m_enemyTanks)
 		{
-			m_window.draw(tank);
+			m_window.draw(*tank);
 		}
 		if (m_playerBullet)
 		{
@@ -292,7 +307,6 @@ namespace BattleCity::SFML
 			m_window.draw(*m_playerBullet2);
 			m_playerBullet2->bullet()->move();
 		}
-		m_window.draw(eagle);
 		for (auto& bullet : bullets)
 		{
 			if (bulletAlive(*bullet))
@@ -409,55 +423,99 @@ namespace BattleCity::SFML
 				}
 			}
 		}
-		for (int k = 0; k < enemyTanks.size(); ++k)
-		{
+		//for (int k = 0; k < enemyTanks.size(); ++k)
+		//{
+		//	for (int i = 0; i < m_tileMap.getMap().getWidth(); ++i)
+		//	{
+		//		for (int j = 0; j < m_tileMap.getMap().getHeight(); ++j)
+		//		{
+		//			int xTank = enemyTanks[k].tank()->getXPosition();
+		//			int yTank = enemyTanks[k].tank()->getYPosition();
+		//			int widthTank = enemyTanks[k].tank()->getWidth();
+		//			int heightTank = enemyTanks[k].tank()->getHeight();
+
+		//			int xTile = j * GameConfig::MAP_TILE_SIZE;
+		//			int yTile = i * GameConfig::MAP_TILE_SIZE;
+		//			int widthTile = GameConfig::MAP_TILE_SIZE;
+		//			int heightTile = GameConfig::MAP_TILE_SIZE;
+
+		//			if (isCollision(xTank, yTank, widthTank, heightTank, xTile, yTile, widthTile, heightTile))
+		//			{
+		//				switch (m_tileMap.getMap().at(i, j))
+		//				{
+		//				case 0: // brick
+		//				case 1: // stone
+		//				case 2: // water
+		//				{
+		//					auto collSize = getCollisionSize(xTank, yTank, widthTank, heightTank, xTile, yTile,
+		//						widthTile, heightTile);
+		//					switch (enemyTanks[i].tank()->getTankDirection())
+		//					{
+		//					case GameLogic::Tank::MoveDirection::LEFT:
+		//					{
+		//						enemyTanks[k].tank()->setPosition(xTank + collSize.w, yTank);
+		//						break;
+		//					}
+		//					case GameLogic::Tank::MoveDirection::UP:
+		//					{
+		//						enemyTanks[k].tank()->setPosition(xTank, yTank + collSize.h);
+		//						break;
+		//					}
+		//					case GameLogic::Tank::MoveDirection::RIGHT:
+		//					{
+		//						enemyTanks[k].tank()->setPosition(xTank - collSize.w, yTank);
+		//						break;
+		//					}
+		//					case GameLogic::Tank::MoveDirection::DOWN:
+		//					{
+		//						enemyTanks[k].tank()->setPosition(xTank, yTank - collSize.h);
+		//						break;
+		//					}
+		//					}
+		//					break;
+		//				}
+		//				default:
+		//					break;
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
+	}
+
+	void Game::checkBulletTileCollision()
+	{
+		auto& playerBullets = m_playerBullet;
+		//auto &enemyBullets = m_enemyBullets;
+
+		if (playerBullets)
 			for (int i = 0; i < m_tileMap.getMap().getWidth(); ++i)
 			{
 				for (int j = 0; j < m_tileMap.getMap().getHeight(); ++j)
 				{
-					int xTank = enemyTanks[k].tank()->getXPosition();
-					int yTank = enemyTanks[k].tank()->getYPosition();
-					int widthTank = enemyTanks[k].tank()->getWidth();
-					int heightTank = enemyTanks[k].tank()->getHeight();
+					int xTank = playerBullets->bullet()->getPosition().x;
+					int yTank = playerBullets->bullet()->getPosition().y;
+					int widthTank = playerBullets->bullet()->getWidth();
+					int heightTank = playerBullets->bullet()->getHeight();
 
 					int xTile = j * GameConfig::MAP_TILE_SIZE;
 					int yTile = i * GameConfig::MAP_TILE_SIZE;
 					int widthTile = GameConfig::MAP_TILE_SIZE;
 					int heightTile = GameConfig::MAP_TILE_SIZE;
 
-					if (isCollision(xTank, yTank, widthTank, heightTank, xTile, yTile, widthTile, heightTile))
+					if (playerBullets->bullet()->isAlive && isCollision(xTank, yTank, widthTank, heightTank, xTile, yTile, widthTile, heightTile))
 					{
 						switch (m_tileMap.getMap().at(i, j))
 						{
 						case 0: // brick
-						case 1: // stone
-						case 2: // water
 						{
-							auto collSize = getCollisionSize(xTank, yTank, widthTank, heightTank, xTile, yTile,
-								widthTile, heightTile);
-							switch (enemyTanks[i].tank()->getTankDirection())
-							{
-							case GameLogic::Tank::MoveDirection::LEFT:
-							{
-								enemyTanks[k].tank()->setPosition(xTank + collSize.w, yTank);
-								break;
-							}
-							case GameLogic::Tank::MoveDirection::UP:
-							{
-								enemyTanks[k].tank()->setPosition(xTank, yTank + collSize.h);
-								break;
-							}
-							case GameLogic::Tank::MoveDirection::RIGHT:
-							{
-								enemyTanks[k].tank()->setPosition(xTank - collSize.w, yTank);
-								break;
-							}
-							case GameLogic::Tank::MoveDirection::DOWN:
-							{
-								enemyTanks[k].tank()->setPosition(xTank, yTank - collSize.h);
-								break;
-							}
-							}
+							playerBullets->bullet()->isAlive = false;
+							m_tileMap.getMap().at(i, j) = 4;
+							m_tileMap.initMapTexture();
+						}
+						case 1: // stone
+						{
+							playerBullets->bullet()->isAlive = false;
 							break;
 						}
 						default:
@@ -466,50 +524,6 @@ namespace BattleCity::SFML
 					}
 				}
 			}
-		}
-	}
-
-	void Game::checkBulletTileCollision()
-	{
-		auto &playerBullets = m_playerBullet;
-		//auto &enemyBullets = m_enemyBullets;
-
-		if(playerBullets)
-		for (int i = 0; i < m_tileMap.getMap().getWidth(); ++i)
-		{
-		    for (int j = 0; j < m_tileMap.getMap().getHeight(); ++j)
-		    {
-		        int xTank = playerBullets->bullet()->getPosition().x;
-		        int yTank = playerBullets->bullet()->getPosition().y;
-		        int widthTank = playerBullets->bullet()->getWidth();
-		        int heightTank = playerBullets->bullet()->getHeight();
-		
-		        int xTile = j * GameConfig::MAP_TILE_SIZE;
-		        int yTile = i * GameConfig::MAP_TILE_SIZE;
-		        int widthTile = GameConfig::MAP_TILE_SIZE;
-		        int heightTile = GameConfig::MAP_TILE_SIZE;
-		
-		        if (playerBullets->bullet()->isAlive && isCollision(xTank, yTank, widthTank, heightTank, xTile, yTile, widthTile, heightTile))
-		        {
-		            switch (m_tileMap.getMap().at(i, j))
-		            {
-		                case 0: // brick
-		                {
-		                    playerBullets->bullet()->isAlive = false;
-							m_tileMap.getMap().at(i, j) = 4;
-							m_tileMap.initMapTexture();
-		                }
-		                case 1: // stone
-		                {
-		                    playerBullets->bullet()->isAlive = false;
-		                    break;
-		                }
-		                default:
-		                    break;
-		            }
-		        }
-		    }
-		}
 		//        for (int k = 0; k < enemyBullets.size(); ++k)
 		//        {
 		//            for (int i = 0; i < m_map.getWidth(); ++i)
@@ -549,14 +563,84 @@ namespace BattleCity::SFML
 		//        }
 	}
 
+	void Game::checkEnemyTankPlayerBulletCollision()
+	{
+		auto& tanks = m_enemyTanks;
+		playerBullets.clear();
+		if (m_state == GameState::SinglePlayerGame && m_playerBullet) {
+			playerBullets.push_back(m_playerBullet->bullet().get());
+		}
+		if (m_state == GameState::TwoPlayerGame && m_playerBullet2) {
+			playerBullets.push_back(m_playerBullet2->bullet().get());
+		}
+
+		for (int i = 0; i < tanks.size(); ++i)
+		{
+			for (int j = 0; j < playerBullets.size(); ++j)
+			{
+				int xTank = tanks[i]->tank()->getXPosition();
+				int yTank = tanks[i]->tank()->getYPosition();
+				int widthTank = tanks[i]->tank()->getWidth();
+				int heightTank = tanks[i]->tank()->getHeight();
+
+				int xBullet = playerBullets[j]->getPosition().x;
+				int yBullet = playerBullets[j]->getPosition().y;
+				int widthBullet = playerBullets[j]->getWidth();
+				int heightBullet = playerBullets[j]->getHeight();
+
+				if (isCollision(xTank, yTank, widthTank, heightTank, xBullet, yBullet, widthBullet, heightBullet))
+				{
+					tanks[i]->tank()->isAlive = false;
+					playerBullets[j]->isAlive = false;
+				}
+			}
+		}
+	}
+
+	void Game::checkEaglePlayerBulletCollision()
+	{
+		auto& eagles = m_eagles;
+		playerBullets.clear();
+		if (m_state == GameState::SinglePlayerGame && m_playerBullet) {
+			playerBullets.push_back(m_playerBullet->bullet().get());
+		}
+		if (m_state == GameState::TwoPlayerGame && m_playerBullet2) {
+			playerBullets.push_back(m_playerBullet2->bullet().get());
+		}
+
+		for (int i = 0; i < eagles.size(); ++i)
+		{
+			for (int j = 0; j < playerBullets.size(); ++j)
+			{
+				int xTank = eagles[i]->eagle()->getPosition().x;
+				int yTank = eagles[i]->eagle()->getPosition().y;
+				int widthTank = 100;
+				int heightTank = 100;
+
+				int xBullet = playerBullets[j]->getPosition().x;
+				int yBullet = playerBullets[j]->getPosition().y;
+				int widthBullet = playerBullets[j]->getWidth();
+				int heightBullet = playerBullets[j]->getHeight();
+
+				if (isCollision(xTank, yTank, widthTank, heightTank, xBullet, yBullet, widthBullet, heightBullet))
+				{
+					m_state = GameState::SFMLMenu;
+					return;
+				}
+			}
+		}
+	}
+
 	void Game::checkCollision()
 	{
 		checkTankTileCollision();
 		checkBulletTileCollision();
+		checkEnemyTankPlayerBulletCollision();
+		checkEaglePlayerBulletCollision();
 		//std::remove_if(m_playerTanks.begin(), m_playerTanks.end(), [](const Tank& tank)
 		//	{ return !tank.isAlive; });
-		//std::remove_if(m_enemyTanks.begin(), m_enemyTanks.end(), [](const Tank& tank)
-		//	{ return !tank.isAlive; });
+		m_enemyTanks.erase(std::remove_if(m_enemyTanks.begin(), m_enemyTanks.end(), [](const std::unique_ptr<SFMLTank>& tank)
+			{ return !tank->tank()->isAlive; }), m_enemyTanks.end());
 		//std::remove_if(m_enemyBullets.begin(), m_enemyBullets.end(), [](const Bullet& bullet)
 		//	{ return !bullet.isAlive; });
 		//std::remove_if(m_playerBullets.begin(), m_playerBullets.end(), [](const Bullet& bullet)

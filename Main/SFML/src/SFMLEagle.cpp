@@ -1,31 +1,35 @@
 #include "SFMLEagle.h"
 
-SFMLEagle::SFMLEagle()
+namespace BattleCity::SFML
 {
-	setTexture();
-	setSprite();
+	SFMLEagle::SFMLEagle(std::shared_ptr<GameLogic::Eagle> eagle)
+		: m_eagle{eagle}
+	{
+		setTexture();
+		setSprite();
 
-	auto position = m_eagle.getPosition();
+		auto position = m_eagle->getPosition();
 
-	m_sprite.setPosition(position.x, position.y);
-}
+		m_sprite.setPosition(position.x, position.y);
+	}
 
-Position SFMLEagle::getPosition()
-{
-	return m_eagle.getPosition();
-}
+	std::shared_ptr<GameLogic::Eagle> SFMLEagle::eagle()
+	{
+		return m_eagle;
+	}
 
-void SFMLEagle::setTexture()
-{
-	m_texture = m_textureManager.getEagleTexture();
-}
+	void SFMLEagle::setTexture()
+	{
+		m_texture = m_textureManager.getEagleTexture();
+	}
 
-void SFMLEagle::setSprite()
-{
-	m_sprite.setTexture(m_texture);
-}
+	void SFMLEagle::setSprite()
+	{
+		m_sprite.setTexture(m_texture);
+	}
 
-void SFMLEagle::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(m_sprite);
+	void SFMLEagle::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(m_sprite);
+	}
 }

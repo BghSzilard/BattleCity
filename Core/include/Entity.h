@@ -12,6 +12,6 @@ namespace BattleCity::GameLogic
           RIGHT = 90
       };
 
-  	bool isAlive;
+  	bool isAlive = true;
   };
 }
