@@ -1,8 +1,17 @@
 #pragma once
 
-class Entity
+namespace BattleCity::GameLogic
 {
-public:
+  class Entity
+  {
+  public:
+      enum class MoveDirection {
+          UP = 0,
+          DOWN = 180,
+          LEFT = 270,
+          RIGHT = 90
+      };
 
-	bool isAlive;
-};
+  	bool isAlive;
+  };
+}
