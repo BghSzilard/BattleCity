@@ -17,6 +17,11 @@ namespace BattleCity::SFML
 		void runGame();
 
 	private:
+		void checkTankTileCollision();
+		void checkBulletTileCollision();
+		void checkCollision();
+
+	private:
 		sf::RenderWindow m_window;
 
 //		GameState m_icon;  // needed to determine the position of the tank in the menu
@@ -28,6 +33,9 @@ namespace BattleCity::SFML
 
         std::vector<SFML::SFMLTank> tanks;
         std::vector<std::unique_ptr<SFMLBullet>> bullets;
+
+		// TODO remove all bullshit
+        std::vector<std::shared_ptr<GameLogic::Tank>> playerTanks;
 
 //		Sprite m_spr;
 		SFML::TileMap m_tileMap;

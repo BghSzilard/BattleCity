@@ -39,7 +39,7 @@ namespace BattleCity::GameLogic
   	void determineMoveStrategy();
 
   	IMoveStrategy* m_moveStrategy;
-  	int m_height, m_width;
+  	int m_height = 40, m_width = 40;
 
   	Position m_position;
   	MoveDirection m_direction;

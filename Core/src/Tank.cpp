@@ -20,8 +20,8 @@ namespace BattleCity::GameLogic
   
   void Tank::setPosition(float x, float y)
   {
-      assert(0 <= x);
-      assert(0 <= y);
+      //assert(0 <= x);
+      //assert(0 <= y);
   
       m_xPos = x;
       m_yPos = y;
@@ -69,7 +69,28 @@ void BattleCity::GameLogic::Tank::setOnBulletShot(BattleCity::GameLogic::Tank::O
 
 void BattleCity::GameLogic::Tank::shootBullet()
 {
-    auto bullet = std::make_shared<Bullet>(Position{m_xPos, m_yPos}, getTankDirection(), Bullet::BulletType::PlayerBullet);
+    int BULLET_SIZE = 40; // TODO wtf is tis shit
+    auto position = Position{ m_xPos, m_yPos };
+    switch (getTankDirection()) {
+    case MoveDirection::UP:
+        position.x -= BULLET_SIZE/2;
+        position.y -= getHeight() / 2 + BULLET_SIZE;
+        break;
+    case MoveDirection::DOWN:
+        position.x -= BULLET_SIZE / 2;
+        position.y += getHeight() / 2;
+        break;
+    case MoveDirection::LEFT:
+        position.x -= getWidth() + BULLET_SIZE / 2;
+        position.y -= BULLET_SIZE / 2;
+        break;
+    case MoveDirection::RIGHT:
+        position.x += getWidth() / 2;
+        position.y -= BULLET_SIZE / 2;
+        break;
+    }
+
+    auto bullet = std::make_shared<Bullet>(position, getTankDirection(), Bullet::BulletType::PlayerBullet);
     if (onBulletShot) {
         onBulletShot(*this, bullet);
     }

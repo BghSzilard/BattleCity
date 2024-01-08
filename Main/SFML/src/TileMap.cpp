@@ -80,6 +80,11 @@ namespace BattleCity::SFML
             }
     }
 
+    GameLogic::Map& TileMap::getMap()
+    {
+        return m_mapModel;
+    }
+
     void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
     {
         // apply the transform

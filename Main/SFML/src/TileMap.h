@@ -23,6 +23,8 @@ namespace BattleCity::SFML
 
         void initMapTexture();
 
+        GameLogic::Map& getMap();
+
     private:
 
         void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

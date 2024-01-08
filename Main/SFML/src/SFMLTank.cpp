@@ -30,9 +30,9 @@ namespace BattleCity::SFML
 		// apply the texture
 		//states.texture = &m_tankTexture;
 
-		std::cout << static_cast<int>(m_tankModel->getTankDirection()) << ' '
-			<< m_tankModel->getXPosition() << ' '
-			<< m_tankModel->getYPosition() << ' ' << std::endl;
+		//std::cout << static_cast<int>(m_tankModel->getTankDirection()) << ' '
+		//	<< m_tankModel->getXPosition() << ' '
+		//	<< m_tankModel->getYPosition() << ' ' << std::endl;
 		// you may also override states.shader or states.blendMode if you want
 
 			// draw the vertex array
