@@ -20,8 +20,8 @@ namespace BattleCity::GameLogic
 
       Level(Map map, TankCollection  enemyTanks);
 
-      //TODO: expose Map and Tank collection
       Map& getMap();
+      TankCollection& getEnemyTanks();
   private:
       Map m_map;
       TankCollection m_enemyTanks;

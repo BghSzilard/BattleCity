@@ -19,4 +19,9 @@ namespace BattleCity::GameLogic
     {
         return m_map;
     }
+
+    Level::TankCollection &Level::getEnemyTanks()
+    {
+        return m_enemyTanks;
+    }
 }

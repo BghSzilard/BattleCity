@@ -14,10 +14,8 @@ namespace BattleCity::GameLogic
   class LevelFactory : public ILevelFactory
   {
   public:
-      //TODO: Inject ILevelReader
       LevelFactory();
 
-      //TODO: Pointer to ILevel for polymorphism
       Level createLevel(int levelNumber) override;
 
       std::string getLevelPath(int levelNumber);

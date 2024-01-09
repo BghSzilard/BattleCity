@@ -32,7 +32,6 @@ namespace BattleCity::GameLogic
 		std::vector<Bullet> m_playerBullets;
 		std::vector<Bullet> m_enemyBullets;
 
-        //todo: shared ptr
         Level m_level;
         std::unique_ptr<ILevelFactory> m_levelFactory;
 	};

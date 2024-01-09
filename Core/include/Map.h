@@ -24,7 +24,6 @@ namespace BattleCity::GameLogic
 
         [[nodiscard]] int& at(size_t row, size_t column);
 
-        //TODO: Values of matrix must be modifiable
     private:
         Matrix<int> m_map;
     };

@@ -69,7 +69,7 @@ void BattleCity::GameLogic::Tank::setOnBulletShot(BattleCity::GameLogic::Tank::O
 
 void BattleCity::GameLogic::Tank::shootBullet()
 {
-    int BULLET_SIZE = 40; // TODO wtf is tis shit
+    int BULLET_SIZE = 40;
     auto position = Position{ m_xPos, m_yPos };
     switch (getTankDirection()) {
     case MoveDirection::UP:
