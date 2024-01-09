@@ -18,7 +18,7 @@ namespace BattleCity::SFML
     class SFMLTank : public sf::Drawable
     {
     public:
-        explicit SFMLTank(TextureManager& textureManager, std::shared_ptr<GameLogic::Tank>& tank);
+        explicit SFMLTank(TextureManager& textureManager, std::shared_ptr<GameLogic::Tank>& tank, sf::Color color = sf::Color::White);
 
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

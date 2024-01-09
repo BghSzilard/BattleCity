@@ -7,11 +7,12 @@
 
 namespace BattleCity::SFML
 {
-	SFMLTank::SFMLTank(TextureManager& textureManager, std::shared_ptr<GameLogic::Tank>& tank)
+	SFMLTank::SFMLTank(TextureManager& textureManager, std::shared_ptr<GameLogic::Tank>& tank, sf::Color color)
 		: m_tankModel(tank),
 		m_textureManager(textureManager),
 		m_tankTexture(textureManager.getTankTexture()) {
 
+        m_tankSprite.setColor(color);
 		m_tankSprite.setTexture(m_tankTexture);
 		//texture is 512x512, and we want the tank to be the same size as the tiles (64x64) => scale by a factor of 1/8=0.125
 		m_tankSprite.setScale(0.125f, 0.125f);

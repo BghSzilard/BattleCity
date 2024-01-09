@@ -11,14 +11,11 @@ namespace BattleCity::SFML
 {
 	Game::Game(TextureManager& textureManager)
 		: m_textureManager(textureManager), m_gameModel(std::make_unique<GameLogic::LevelFactory>()),
-		m_tileMap(m_textureManager,
-			std::move(m_gameModel.getLevel())),
-		m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y, GameLogic::Tank::MoveDirection::UP)),
+		m_tileMap(m_textureManager,m_gameModel.getLevel()),
+		m_playerTank(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X, GameConfig::INITIAL_TANK_POS_Y, GameLogic::Tank::MoveDirection::UP), sf::Color::Green),
 		m_playerTank2(m_textureManager, std::make_shared<GameLogic::Tank>(GameConfig::INITIAL_TANK_POS_X + 64, GameConfig::INITIAL_TANK_POS_Y + 64, GameLogic::Tank::MoveDirection::UP)),
 		m_eagles()
 	{
-		//		std::srand(unsigned(std::time(nullptr)));
-				// hardcoded screen size so that map nicely fills the screen (can be modified later)
 		m_window.create(sf::VideoMode(1024, 1024), GameConfig::WINDOW_NAME);
 		m_window.setFramerateLimit(GameConfig::FRAME_LIMIT);
 
@@ -37,7 +34,15 @@ namespace BattleCity::SFML
 			}
 		);
 
-		m_enemyTanks.emplace_back(std::make_unique<SFMLTank>(textureManager, std::make_shared<GameLogic::Tank>(150.f, 150.f, GameLogic::Tank::MoveDirection::UP)));
+        auto& enemyTanks = m_gameModel.getLevel().getEnemyTanks();
+
+        for(auto& enemyTank : enemyTanks)
+        {
+		    m_enemyTanks.emplace_back(std::make_unique<SFMLTank>(textureManager, enemyTank));
+
+        }
+
+
 
 		m_enemyTanks[0]->tank()->setOnBulletShot(
 			[this](const GameLogic::Tank&, std::shared_ptr<GameLogic::Bullet> bullet)
@@ -157,7 +162,6 @@ namespace BattleCity::SFML
 				m_state = GameState::EXIT;
 		}
 
-		// TODO: Check bounds of screen
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::LEFT);
@@ -237,7 +241,6 @@ namespace BattleCity::SFML
 				m_state = GameState::EXIT;
 		}
 
-		// TODO: Check bounds of screen
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			m_playerTank.tank()->setTankDirection(GameLogic::Tank::MoveDirection::LEFT);
@@ -426,70 +429,11 @@ namespace BattleCity::SFML
 				}
 			}
 		}
-		//for (int k = 0; k < enemyTanks.size(); ++k)
-		//{
-		//	for (int i = 0; i < m_tileMap.getMap().getWidth(); ++i)
-		//	{
-		//		for (int j = 0; j < m_tileMap.getMap().getHeight(); ++j)
-		//		{
-		//			int xTank = enemyTanks[k].tank()->getXPosition();
-		//			int yTank = enemyTanks[k].tank()->getYPosition();
-		//			int widthTank = enemyTanks[k].tank()->getWidth();
-		//			int heightTank = enemyTanks[k].tank()->getHeight();
-
-		//			int xTile = j * GameConfig::MAP_TILE_SIZE;
-		//			int yTile = i * GameConfig::MAP_TILE_SIZE;
-		//			int widthTile = GameConfig::MAP_TILE_SIZE;
-		//			int heightTile = GameConfig::MAP_TILE_SIZE;
-
-		//			if (isCollision(xTank, yTank, widthTank, heightTank, xTile, yTile, widthTile, heightTile))
-		//			{
-		//				switch (m_tileMap.getMap().at(i, j))
-		//				{
-		//				case 0: // brick
-		//				case 1: // stone
-		//				case 2: // water
-		//				{
-		//					auto collSize = getCollisionSize(xTank, yTank, widthTank, heightTank, xTile, yTile,
-		//						widthTile, heightTile);
-		//					switch (enemyTanks[i].tank()->getTankDirection())
-		//					{
-		//					case GameLogic::Tank::MoveDirection::LEFT:
-		//					{
-		//						enemyTanks[k].tank()->setPosition(xTank + collSize.w, yTank);
-		//						break;
-		//					}
-		//					case GameLogic::Tank::MoveDirection::UP:
-		//					{
-		//						enemyTanks[k].tank()->setPosition(xTank, yTank + collSize.h);
-		//						break;
-		//					}
-		//					case GameLogic::Tank::MoveDirection::RIGHT:
-		//					{
-		//						enemyTanks[k].tank()->setPosition(xTank - collSize.w, yTank);
-		//						break;
-		//					}
-		//					case GameLogic::Tank::MoveDirection::DOWN:
-		//					{
-		//						enemyTanks[k].tank()->setPosition(xTank, yTank - collSize.h);
-		//						break;
-		//					}
-		//					}
-		//					break;
-		//				}
-		//				default:
-		//					break;
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
 	}
 
 	void Game::checkBulletTileCollision()
 	{
 		auto& playerBullets = m_playerBullet;
-		//auto &enemyBullets = m_enemyBullets;
 
 		if (playerBullets)
 			for (int i = 0; i < m_tileMap.getMap().getWidth(); ++i)
@@ -527,43 +471,6 @@ namespace BattleCity::SFML
 					}
 				}
 			}
-		//        for (int k = 0; k < enemyBullets.size(); ++k)
-		//        {
-		//            for (int i = 0; i < m_map.getWidth(); ++i)
-		//            {
-		//                for (int j = 0; j < m_map.getHeight(); ++j)
-		//                {
-		//                    int xTank = enemyBullets[i].getPosition().x;
-		//                    int yTank = enemyBullets[i].getPosition().y;
-		//                    int widthTank = enemyBullets[i].getWidth();
-		//                    int heightTank = enemyBullets[i].getHeight();
-		//
-		//                    int xTile = i * GameConfig::MAP_TILE_SIZE;
-		//                    int yTile = j * GameConfig::MAP_TILE_SIZE;
-		//                    int widthTile = GameConfig::MAP_TILE_SIZE;
-		//                    int heightTile = GameConfig::MAP_TILE_SIZE;
-		//
-		//                    if (isCollision(xTank, yTank, widthTank, heightTank, xTile, yTile, widthTile, heightTile))
-		//                    {
-		//                        switch (m_map.at(i, j))
-		//                        {
-		//                            case 0: // brick
-		//                            {
-		//                                enemyBullets[i].isAlive = false;
-		//                                m_map.at(i, j) = 4;
-		//                            }
-		//                            case 1: // stone
-		//                            {
-		//                                enemyBullets[i].isAlive = false;
-		//                                break;
-		//                            }
-		//                            default:
-		//                                break;
-		//                        }
-		//                    }
-		//                }
-		//            }
-		//        }
 	}
 
 	void Game::checkEnemyTankPlayerBulletCollision()
@@ -640,13 +547,7 @@ namespace BattleCity::SFML
 		checkBulletTileCollision();
 		checkEnemyTankPlayerBulletCollision();
 		checkEaglePlayerBulletCollision();
-		//std::remove_if(m_playerTanks.begin(), m_playerTanks.end(), [](const Tank& tank)
-		//	{ return !tank.isAlive; });
 		m_enemyTanks.erase(std::remove_if(m_enemyTanks.begin(), m_enemyTanks.end(), [](const std::unique_ptr<SFMLTank>& tank)
 			{ return !tank->tank()->isAlive; }), m_enemyTanks.end());
-		//std::remove_if(m_enemyBullets.begin(), m_enemyBullets.end(), [](const Bullet& bullet)
-		//	{ return !bullet.isAlive; });
-		//std::remove_if(m_playerBullets.begin(), m_playerBullets.end(), [](const Bullet& bullet)
-		//	{ return !bullet.isAlive; });
 	}
 }

@@ -39,7 +39,6 @@ namespace BattleCity::SFML
 
 		std::vector<std::unique_ptr<SFMLEagle>> m_eagles;
 
-		// TODO remove all bullshit
         std::vector<std::shared_ptr<GameLogic::Tank>> playerTanks;
 		std::vector<GameLogic::Bullet*> playerBullets;
 
