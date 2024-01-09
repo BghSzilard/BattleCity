@@ -1,0 +1,461 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language romanian
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 12
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2.5cm
+\topmargin 2cm
+\rightmargin 2.5cm
+\bottommargin 1.5cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style polish
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+Battle City - Documentație
+\end_layout
+
+\begin_layout Section*
+Membrii echipei
+\end_layout
+
+\begin_layout Itemize
+Balogh Szilárd- 10LF211 
+\end_layout
+
+\begin_layout Itemize
+Opra-Bódi Botond- 10LF212 
+\end_layout
+
+\begin_layout Itemize
+Vitályos Norbert- 10LF213
+\end_layout
+
+\begin_layout Section*
+Scopul proiectului
+\end_layout
+
+\begin_layout Standard
+Scopul proiectului a fost de a recrea jocul Battle City într-un mod cât
+ mai autentic în C++ folosind biblioteca SFML.
+ În implementarea noastră , am folosit o abordare orientată pe obiecte,
+ dând un accent puternic principiilor design pattern-urilor: lucrul pe interfețe
+ și nu pe implementări, folosirea compoziției în dauna moștenirii, încapsularea
+ a ceea ce variază.
+ De asemenea, aplicația este structurată în 3 proiecte: SFML (UI), Core
+ (logica jocului) și Testing.
+ Cu această structură, se obține o delimitare clară a responsabilităților.
+\end_layout
+
+\begin_layout Section*
+Separarea UI-GameLogic
+\end_layout
+
+\begin_layout Standard
+Așa cum am menționat și în paragraful anterior, interfața grafică și logica
+ jocului sunt separate.
+ Pe partea de logică, se află doar acele componente care țin de funcționalitatea
+ claselor, cum ar fi mișcarea tancului și a glonțului și verificarea coliziunii.
+ Așadar, proiectul Core nu conține nicio informație legată de cum arată
+ aplicația.
+\end_layout
+
+\begin_layout Standard
+Clasa tanc în Core:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted12.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se reține poziția, direcția și viteza tancului și se observă metodele aferente.
+ Clasa GameLogic în Core:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted13.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Clasa GameLogic conține tancurile, gloanțele și harta pentru a verifica
+ coliziunile.
+\end_layout
+
+\begin_layout Standard
+Clasa SFMLtanc:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted14.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Reține textura, sprite-ul și funcțiile care țin de grafică precum draw sau
+ inittancTexture.
+ Se remarcă compoziția cu tancul din Core.
+\end_layout
+
+\begin_layout Standard
+UI-ul aplicației:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted24.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted25.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Design patternuri utilizate
+\end_layout
+
+\begin_layout Standard
+În ingineria software, un design pattern este o soluție generală, reutilizabilă
+ la o problemă care apare frecvent în proiectarea software.
+ Am folosit mai multe patternuri, cum ar fi strategy, pentru a efectua mișcările
+ glonțului în direcții diferite, factory, respectiv observer pentru a notifica
+ clasa Game atunci când un tanc a tras și, prin urmare, Game trebuie să
+ verifice coliziunile.
+\end_layout
+
+\begin_layout Section*
+Unit testing
+\end_layout
+
+\begin_layout Standard
+Unit testing este o metodologie de testare a software-ului în care unitățile
+ individuale sau componentele unui software sunt testate izolat de restul
+ aplicației, pentru a se asigura că fiecare parte funcționează corect.
+ În aplicația noastră, am testat cele mai esențiala părți ale proiectului,
+ cum ar fi mișcarea glonțului și a tancului.
+ De asemenea, am utilizat mocking pentru a verifica dacă un nivel, stocat
+ în fișier ca matrice, se încarcă corect.
+\end_layout
+
+\begin_layout Standard
+Test pentru a verifica mișcarea glonțului:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted15.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Mocking pentru a veri ca harta: 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted16.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Diagrame
+\end_layout
+
+\begin_layout Subsection*
+Usecase Diagram
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted19.png
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O diagramă usecase reprezintă funcționalitatea unui sistem folosind actori
+ și cazuri de utilizare.
+ În contextul aplicației noastre, ea subliniază în mod distinct interacțiunile
+ dintre jucătorul uman, AI și sistemul general de joc.
+ Jucătorul este asociat cu cazuri de utilizare precum „Start Game”, „Select
+ Level” și „Exit Game”, indicând acțiunile directe pe care le pot efectua
+ în cadrul sistemului.
+ În mod similar, implicarea AI este caracterizată de cazuri de utilizare
+ precum „Control Enemies” și „Load Next Level”, reflectând rolul său în
+ provocarea jucătorului și progresul jocului.
+ Sistemul în sine este implicat în sarcini fundamentale precum „Inițializare
+ joc” și „Nivel de încărcare”, care sunt esențiale pentru configurarea mediului
+ de joc.
+\end_layout
+
+\begin_layout Subsection*
+Class Diagram
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted18.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O diagramă de clase oferă o vedere statică, concentrându-se pe structura
+ sistemului.
+ În cazul aplicației noastre, conturează arhitectura jocului, delimitând
+ relațiile și rolurile diferitelor entități din sistem.
+ Clasele centrale precum Player, Game, Map, Playertanc și Enemytanc formează
+ coloana vertebrală a structurii sistemului.
+ Clasa Player servește ca punct de intrare, interacționând cu clasa Game,
+ care încapsulează funcționalitatea de bază prin metode precum startGame()
+ și loadLevel().
+ Playertanc și Enemytanc sunt subclase care moștenesc din clasa tanc, permițând
+ comportamente polimorfe în joc.
+\end_layout
+
+\begin_layout Subsection*
+Statechart Diagram
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted20.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O diagramă de stări descrie schimbările de stare ale unui sistem sau ale
+ unui obiect ca răspuns la evenimente.
+ În cadrul aplicației noastre, prima stare este cea de "Main Menu", unde
+ inputul jucătorului determină fluxul, fie prin începerea jocului propriu-zis,
+ fie prin modificarea setărilor.
+ Trecerea de la "Initializing Game" la "Loading next level" denotă etapele
+ prin care trece sistemul înainte de a implica jucătorul în jocul propriu-zis.
+ Stările "Game Loop" și "Checking Collisions" funcționează în tandem, ilustrând
+ capacitatea de răspuns a sistemului.
+ În cadrul buclei de joc, stările precum "Checking key events", "Moving
+ Player tanc" și "Running Enemy tanc AI" reflectă natura interactivă și
+ paralelă a jocului.
+\end_layout
+
+\begin_layout Subsection*
+Activity Diagram
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted21.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O diagramă de activități oferă o vedere dinamică a sistemului, concentrându-se
+ pe fluxul de control și operațiuni.
+ În contextul aplicației noastre, diagrama activității ilustrează fluxul
+ acțiunilor din perspectiva jucătorului.
+ Procesul începe atunci când jucătorul lansează aplicația.
+ După pornirea jocului, este prezentată o interfață de meniu, care oferă
+ două opțiuni principale: pornirea jocului sau ieșirea din aplicație.
+ Dacă jucătorul optează pentru începerea jocului propriu-zis, fluxul trece
+ la primul nivel al jocului, unde jucătorul poate prelua controlul tancului
+ său, în timp ce sistemul controlează tancurile inamice.
+ Alegerea de a părăsi jocul în orice moment duce la închiderea aplicației.
+\end_layout
+
+\begin_layout Subsection*
+Sequence Diagram
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted22.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+O diagramă de secvențe detaliază interacțiunile obiectelor într-o secvență
+ de timp.
+ Diagrama de secvență prezentată oferă o imagine cuprinzătoare a interacțiunilor
+ dintre jucător și componentele sistemului de joc.
+ Aceste componente sunt: jocul, harta, tancul jucător și tancul inamic.
+ Diagrama reprezintă fiecare pas de la începerea jocului.
+ Prima oară, jucătorul trebuie să aleagă una dintre opțiunile prezentate
+ de joc.
+ După aceea, se afișează primul nivel, are loc spawn-ul tancului jucător
+ și începe bucla jocului.
+ Bucla jocului include acțiuni, precum SpawnEnemytanc, MoveEnemytanc, ShootEnemy
+tanc, CheckCollision și CheckEnemyCount.
+ Dacă numărul tancurilor inamice scade la 0, înseamnă că jucătorul a câștigat
+ nivelul respectiv și poate trece la următorul nivel.
+\end_layout
+
+\begin_layout Subsection*
+Collaboration Diagram
+\end_layout
+
+\begin_layout Standard
+O diagramă de colaborare ilustrează modul în care obiectele interacționează
+ într-un context.
+ La începerea jocului, jucătorului i se prezintă un UI care solicită alegerea
+ opțiunilor de joc.
+ Logica jocului este inițializată odată ce o opțiune este selectată, ceea
+ ce duce la configurarea mediului de joc, care include inițializarea hărții
+ și apariția atât a tancului jucătorului, cât și a tancurilor inamice.
+ Jucătorul intră apoi în bucla de joc și se angajează în funcțiile de bază
+ ale jocului, cum ar fi mișcarea tancului și tragerea cu glonțul.
+ Simultan, logica jocului este responsabilă pentru monitorizarea coliziunilor,
+ urmărirea unităților inamice și procesarea inputului jucătorului pentru
+ a continua sau opri jocul.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename ../Documents/pasted23.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Concluzii
+\end_layout
+
+\begin_layout Standard
+Scrierea acestui proiect ne-a ajutat să ne dezvoltăm ca programatori, fiindcă
+ proiectul ne-a ridicat numeroase provocări.
+ De exemplu: am folosit CMake pentru a face aplicația cross-platform, am
+ învățat folosul diagramelor și a design pattern-urilor în cadrul ingineriei
+ software, am învățat cum se scrie o funcție pentru detectarea coliziunii.
+ Cel mai important lucru, însă, pe care l-am învățat este cât de importantă
+ este proiectarea înainte de a începe dezvoltarea propriu-zisă a aplicației.
+\end_layout
+
+\end_body
+\end_document
